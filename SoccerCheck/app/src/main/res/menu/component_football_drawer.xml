@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_champions_league"
+            android:icon="@drawable/ic_menu_gallery_m"
+            android:title="@string/champions_league" />
+        <item
+            android:id="@+id/nav_premiere_league"
+            android:icon="@drawable/ic_menu_gallery_m"
+            android:title="@string/premiere_league" />
+        <item
+            android:id="@+id/nav_bundesliga"
+            android:icon="@drawable/ic_menu_gallery_m"
+            android:title="@string/bundesliga" />
+        <item
+            android:id="@+id/nav_la_liga"
+            android:icon="@drawable/ic_menu_gallery_m"
+            android:title="@string/la_liga" />
+        <item
+            android:id="@+id/nav_serie_a"
+            android:icon="@drawable/ic_menu_gallery_m"
+            android:title="@string/serie_A" />
+    </group>
+
+</menu>

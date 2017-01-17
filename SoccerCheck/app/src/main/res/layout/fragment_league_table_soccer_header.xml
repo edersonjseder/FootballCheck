@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="43dp"
+    android:orientation="vertical"
+    android:id="@+id/response_league_table">
+
+    <LinearLayout
+        android:id="@+id/response_league_table_header"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="43dp">
+
+        <TextView
+            android:text="@string/position"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:id="@+id/textview_header_position"
+            android:layout_weight="0.15"
+            android:background="@drawable/row_header"
+            android:gravity="center_vertical"
+            style="@style/text_label_table"/>
+
+        <TextView
+            android:text="@string/teamName"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:id="@+id/textview_header_team_name"
+            android:layout_weight="0.25"
+            android:background="@drawable/row_header"
+            android:gravity="center_vertical"
+            style="@style/text_label_table"/>
+
+        <TextView
+            android:text="@string/playedGames"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:id="@+id/textview_header_played_games"
+            android:layout_weight="0.25"
+            android:background="@drawable/row_header"
+            android:gravity="center_vertical"
+            style="@style/text_label_table"/>
+
+    </LinearLayout>
+
+</TableLayout>
