@@ -2,11 +2,13 @@ package com.soccer.soccercheck.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
+
 /**
  * Created by ederson.js on 21/11/2016.
  */
 
-public class Standing {
+public class Standing implements Serializable {
 
     @JsonProperty("_links")
     private Links links;

@@ -18,6 +18,7 @@ import com.soccer.soccercheck.fragments.SoccerTabFragment;
 import com.soccer.soccercheck.fragments.TeamDetailFragment;
 import com.soccer.soccercheck.listeners.OnSendCurrentMatchDayListener;
 import com.soccer.soccercheck.listeners.OnTeamSelectedListener;
+import com.soccer.soccercheck.model.Standing;
 import com.soccer.soccercheck.model.Team;
 import com.soccer.soccercheck.path.FBPath;
 
@@ -155,9 +156,9 @@ public class SoccerMainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTeamSelected(Team team, int position) {
+    public void onTeamSelected(Standing standing, int position) {
 
-        mTeamDetailFragment = TeamDetailFragment.newInstance(team);
+        mTeamDetailFragment = TeamDetailFragment.newInstance(standing);
 
         try {
             transaction = getSupportFragmentManager().beginTransaction();

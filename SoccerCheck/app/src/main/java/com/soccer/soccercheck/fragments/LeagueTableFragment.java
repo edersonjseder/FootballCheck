@@ -1,5 +1,7 @@
 package com.soccer.soccercheck.fragments;
 
+import android.graphics.drawable.PictureDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,14 +11,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.bumptech.glide.GenericRequestBuilder;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.StreamEncoder;
+import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
+import com.caverock.androidsvg.SVG;
 import com.soccer.soccercheck.R;
 import com.soccer.soccercheck.adapters.LeagueTableAdapter;
-import com.soccer.soccercheck.main.SoccerMainActivity;
 import com.soccer.soccercheck.model.LeagueTable;
 import com.soccer.soccercheck.services.LeagueTableService;
+import com.soccer.soccercheck.util.SvgDecoder;
+import com.soccer.soccercheck.util.SvgDrawableTranscoder;
+import com.soccer.soccercheck.util.SvgSoftwareLayerSetter;
+
+import java.io.InputStream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,7 +39,8 @@ public class LeagueTableFragment extends Fragment {
     private LeagueTableAdapter leagueTableAdapter;
 
     private Call<LeagueTable> mCallLeagueTable;
-    private LeagueTable mLeagueTable;
+
+    private GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> requestBuilder;
 
     public static LeagueTableFragment newInstance(Integer idCompetition) {
         Log.i(TAG, "newInstance() inside method " + idCompetition);
@@ -72,6 +82,16 @@ public class LeagueTableFragment extends Fragment {
         recyclerViewLeagueTable.setHasFixedSize(true);
         recyclerViewLeagueTable.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        requestBuilder = Glide.with(getActivity())
+                .using(Glide.buildStreamModelLoader(Uri.class, getActivity()), InputStream.class)
+                .from(Uri.class)
+                .as(SVG.class)
+                .transcode(new SvgDrawableTranscoder(), PictureDrawable.class)
+                .sourceEncoder(new StreamEncoder())
+                .cacheDecoder(new FileToStreamDecoder<SVG>(new SvgDecoder()))
+                .decoder(new SvgDecoder())
+                .listener(new SvgSoftwareLayerSetter<Uri>());
+
         return v;
 
     }
@@ -85,7 +105,7 @@ public class LeagueTableFragment extends Fragment {
             @Override
             public void onResponse(Call<LeagueTable> call, Response<LeagueTable> response) {
 
-                mLeagueTable = response.body();
+                LeagueTable mLeagueTable = response.body();
 
                 if(mLeagueTable != null) {
 
@@ -109,7 +129,7 @@ public class LeagueTableFragment extends Fragment {
 
         if(leagueTable != null){
 
-            leagueTableAdapter = new LeagueTableAdapter(leagueTable, getContext());
+            leagueTableAdapter = new LeagueTableAdapter(leagueTable, getContext(), requestBuilder);
             recyclerViewLeagueTable.setAdapter(leagueTableAdapter);
 
         }

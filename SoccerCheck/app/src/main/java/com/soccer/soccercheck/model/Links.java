@@ -13,16 +13,16 @@ public class Links {
     private CompetitionLink competition;
 
     @JsonProperty("homeTeam")
-    private HomeTeam homeTeam;
+    private HomeTeamLink homeTeam;
 
     @JsonProperty("awayTeam")
-    private AwayTeam awayTeam;
+    private AwayTeamLink awayTeam;
 
     @JsonProperty("fixtures")
     private FixtureLink fixtures;
 
     @JsonProperty("players")
-    private Players players;
+    private PlayersLink players;
 
     @JsonProperty("teams")
     private TeamLink teams;
@@ -52,20 +52,19 @@ public class Links {
     }
 
     @JsonProperty("homeTeam")
-    public HomeTeam getHomeTeam() {
+    public HomeTeamLink getHomeTeam() {
         return homeTeam;
     }
 
-    public void setHomeTeam(HomeTeam homeTeam) {
+    public void setHomeTeam(HomeTeamLink homeTeam) {
         this.homeTeam = homeTeam;
     }
 
-    @JsonProperty("awayTeam")
-    public AwayTeam getAwayTeam() {
+    public AwayTeamLink getAwayTeam() {
         return awayTeam;
     }
 
-    public void setAwayTeam(AwayTeam awayTeam) {
+    public void setAwayTeam(AwayTeamLink awayTeam) {
         this.awayTeam = awayTeam;
     }
 
@@ -77,11 +76,11 @@ public class Links {
         this.fixtures = fixtures;
     }
 
-    public Players getPlayers() {
+    public PlayersLink getPlayers() {
         return players;
     }
 
-    public void setPlayers(Players players) {
+    public void setPlayers(PlayersLink players) {
         this.players = players;
     }
 

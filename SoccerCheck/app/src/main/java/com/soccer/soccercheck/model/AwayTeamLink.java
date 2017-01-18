@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Created by root on 19/11/16.
  */
-public class AwayTeam {
+public class AwayTeamLink {
 
     @JsonProperty("href")
     private String href;

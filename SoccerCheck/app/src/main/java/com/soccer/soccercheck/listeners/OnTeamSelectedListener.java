@@ -1,7 +1,6 @@
 package com.soccer.soccercheck.listeners;
 
-import com.soccer.soccercheck.model.Fixture;
-import com.soccer.soccercheck.model.Team;
+import com.soccer.soccercheck.model.Standing;
 
 /**
  * Created by root on 06/11/16.
@@ -10,6 +9,6 @@ import com.soccer.soccercheck.model.Team;
 public interface OnTeamSelectedListener {
 
     // called when user selects a team
-    public void onTeamSelected(Team team, int position);
+    public void onTeamSelected(Standing standing, int position);
 
 }

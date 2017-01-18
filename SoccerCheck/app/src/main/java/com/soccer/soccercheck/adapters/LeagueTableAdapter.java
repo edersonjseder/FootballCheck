@@ -1,6 +1,7 @@
 package com.soccer.soccercheck.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -8,17 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.GenericRequestBuilder;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.caverock.androidsvg.SVG;
 import com.soccer.soccercheck.R;
-import com.soccer.soccercheck.model.Competition;
+import com.soccer.soccercheck.listeners.OnItemClickListener;
+import com.soccer.soccercheck.listeners.OnTeamSelectedListener;
 import com.soccer.soccercheck.model.LeagueTable;
 import com.soccer.soccercheck.model.Standing;
-import com.soccer.soccercheck.viewHolders.FixturesViewHolder;
 import com.soccer.soccercheck.viewHolders.LeagueTableViewHolder;
 import com.squareup.picasso.Picasso;
 
-import org.joda.time.DateTime;
-
-import java.text.SimpleDateFormat;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -29,15 +31,13 @@ public class LeagueTableAdapter extends RecyclerView.Adapter<LeagueTableViewHold
     private static final String TAG = "LeagueTableAdapter";
 
     private List<Standing> leagueTable;
-    private Context context;
-    private DateTime time;
-    private SimpleDateFormat simpleDateFormat;
-    private View.OnClickListener onClickListener;
+    private Context mContext;
+    private GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> requestBuilder;
 
-    public LeagueTableAdapter(LeagueTable leagueTable, Context context) {
+    public LeagueTableAdapter(LeagueTable leagueTable, Context context, GenericRequestBuilder requestBuilder) {
         this.leagueTable = leagueTable.getStanding();
-        this.context = context;
-        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        this.mContext = context;
+        this.requestBuilder = requestBuilder;
     }
 
     @Override
@@ -53,19 +53,30 @@ public class LeagueTableAdapter extends RecyclerView.Adapter<LeagueTableViewHold
     @Override
     public void onBindViewHolder(LeagueTableViewHolder leagueTableViewHolder, int position) {
         Log.i(TAG, "onBindViewHolder() inside method " + position);
-        Context context = leagueTableViewHolder.getImageViewTeamLogo().getContext();
 
         // Gets the position of the item on the List and add the object information
         final Standing standing = this.leagueTable.get(position);
 
         Log.i(TAG, "inside method | uri: " + standing.getCrestURI());
 
+        Uri uri = Uri.parse(standing.getCrestURI());
 
-        Picasso.with(context).load(standing.getCrestURI()).fit().centerInside().into(leagueTableViewHolder.getImageViewTeamLogo());
+        requestBuilder.diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .load(uri)
+                .override(30, 30)
+                .into(leagueTableViewHolder.getImageViewTeamLogo());
 
         leagueTableViewHolder.getPositionTeam().setText(standing.getPosition().toString());
         leagueTableViewHolder.getTeamName().setText(standing.getTeamName());
         leagueTableViewHolder.getPlayedGames().setText(standing.getPlayedGames().toString());
+
+        // Listener to the card view item to show a detail when is clicked
+        leagueTableViewHolder.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                ((OnTeamSelectedListener)mContext).onTeamSelected(standing, position);
+            }
+        });
 
     }
 
