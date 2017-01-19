@@ -2,6 +2,7 @@ package com.soccer.soccercheck.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.soccer.soccercheck.model.ChampionsLeagueTable;
 import com.soccer.soccercheck.model.LeagueTable;
 import com.soccer.soccercheck.path.FBPath;
 
@@ -27,6 +28,9 @@ public interface LeagueTableService {
 
     @GET(FBPath.COMPETITIONS + "/{id}/" + FBPath.LEAGUETABLE)
     Call<LeagueTable> fetchLeagueTable(@Path("id") int id);
+
+    @GET(FBPath.COMPETITIONS + "/{id}/" + FBPath.LEAGUETABLE)
+    Call<ChampionsLeagueTable> fetchChampionsLeagueTable(@Path("id") int id);
 
     class Factory {
 

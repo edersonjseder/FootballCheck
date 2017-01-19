@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="43dp"
     android:orientation="vertical"
-    android:id="@+id/id_fragment_league_table_header">
+    android:id="@+id/response_league_table">
 
     <LinearLayout
         android:id="@+id/response_league_table_header"
@@ -14,31 +14,51 @@
         android:layout_height="43dp">
 
         <TextView
-            android:text="@string/position"
+            android:text="@string/group"
             android:layout_width="0dp"
             android:layout_height="30dp"
-            android:id="@+id/textview_header_position"
-            android:layout_weight="0.15"
+            android:id="@+id/textview_header_group"
+            android:layout_weight="0.09"
             android:background="@drawable/row_header"
             android:gravity="center_vertical"
             style="@style/text_label_table"/>
 
         <TextView
-            android:text="@string/teamName"
+            android:text="@string/rank"
             android:layout_width="0dp"
             android:layout_height="30dp"
-            android:id="@+id/textview_header_team_name"
+            android:id="@+id/textview_header_rank"
+            android:layout_weight="0.09"
+            android:background="@drawable/row_header"
+            android:gravity="center_vertical"
+            style="@style/text_label_table"/>
+
+        <TextView
+            android:text="@string/team"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:id="@+id/textview_header_team"
             android:layout_weight="0.25"
             android:background="@drawable/row_header"
             android:gravity="center_vertical"
             style="@style/text_label_table"/>
 
         <TextView
-            android:text="@string/playedGames"
+            android:text="@string/playedGamesCL"
             android:layout_width="0dp"
             android:layout_height="30dp"
-            android:id="@+id/textview_header_played_games"
-            android:layout_weight="0.25"
+            android:id="@+id/textview_header_played_games_cl"
+            android:layout_weight="0.09"
+            android:background="@drawable/row_header"
+            android:gravity="center_vertical"
+            style="@style/text_label_table"/>
+
+        <TextView
+            android:text="@string/pointsCL"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:id="@+id/textview_header_points_cl"
+            android:layout_weight="0.09"
             android:background="@drawable/row_header"
             android:gravity="center_vertical"
             style="@style/text_label_table"/>

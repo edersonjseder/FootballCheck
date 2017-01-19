@@ -24,7 +24,7 @@
     <dimen name="TextSize">11dp</dimen>
     <dimen name="TextDataSize">9dp</dimen>
     <dimen name="TextStatusSize">9dp</dimen>
-    <dimen name="paddingHorizontal">5dp</dimen>
+    <dimen name="paddingHorizontal">2dp</dimen>
 
     <dimen name="TextPosition">9dp</dimen>
     <dimen name="TextTeamName">9dp</dimen>

@@ -25,6 +25,7 @@
     <string name="title_tab_league_table">Table</string>
     <string name="title_tab_fixtures_list">Fixtures</string>
 
+    <!-- League Table Label -->
     <string name="position">Position</string>
     <string name="teamName">Team</string>
     <string name="playedGames">Games</string>
@@ -35,4 +36,16 @@
     <string name="wins">Wins</string>
     <string name="draws">Draws</string>
     <string name="losses">Losses</string>
+
+    <!-- Champions League Table Label -->
+    <string name="group">Group</string>
+    <string name="rank">Rank</string>
+    <string name="team">Team</string>
+    <string name="playedGamesCL">Games</string>
+    <string name="pointsCL">Points</string>
+    <string name="goalsCL">Goals</string>
+    <string name="goalsAgainstCL">Goals Against</string>
+    <string name="goalDifferenceCL">Goal Difference</string>
+
+
 </resources>
