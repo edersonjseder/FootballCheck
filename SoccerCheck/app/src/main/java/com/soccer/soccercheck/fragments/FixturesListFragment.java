@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 
 import com.soccer.soccercheck.R;
 import com.soccer.soccercheck.adapters.FixturesListAdapter;
-import com.soccer.soccercheck.adapters.LeagueTableAdapter;
-import com.soccer.soccercheck.main.SoccerMainActivity;
 import com.soccer.soccercheck.model.FixturesData;
 import com.soccer.soccercheck.services.FixturesDataService;
 
@@ -32,7 +30,6 @@ public class FixturesListFragment extends Fragment {
     private FixturesListAdapter fixturesListAdapter;
 
     private Call<FixturesData> mCallFixturesData;
-    private FixturesData mFixturesData;
 
     public static FixturesListFragment newInstance(Integer idCompetition) {
         Log.i(TAG, "newInstance() inside method " + idCompetition);
@@ -64,7 +61,7 @@ public class FixturesListFragment extends Fragment {
             return;
 
         if (savedInstanceState == null) {
-            getLeagueTable(idCompetition, currentMatchDay);
+            getFixturesData(idCompetition, currentMatchDay);
 
         }
     }
@@ -82,8 +79,8 @@ public class FixturesListFragment extends Fragment {
 
     }
 
-    public void getLeagueTable(Integer id, Integer currentMatchDay) {
-        Log.i(TAG, "getLeagueTable() inside method " + id);
+    public void getFixturesData(Integer id, Integer currentMatchDay) {
+        Log.i(TAG, "getFixturesData() inside method " + id);
 
         mCallFixturesData = FixturesDataService.Factory.create().retrieveFixturesById(id, currentMatchDay);
 
@@ -91,11 +88,11 @@ public class FixturesListFragment extends Fragment {
             @Override
             public void onResponse(Call<FixturesData> call, Response<FixturesData> response) {
 
-                mFixturesData = response.body();
+                FixturesData mFixturesData = response.body();
 
                 if(mFixturesData != null) {
 
-                    showLeagueTable(mFixturesData);
+                    showFixtures(mFixturesData);
 
                 }
 
@@ -103,15 +100,15 @@ public class FixturesListFragment extends Fragment {
 
             @Override
             public void onFailure(Call<FixturesData> call, Throwable t) {
-                Log.i(TAG, "onFailure() inside method");
+                Log.e(TAG, "onFailure() inside method");
                 t.printStackTrace();
             }
         });
 
     }
 
-    private void showLeagueTable(FixturesData fixturesData) {
-        Log.i(TAG, "showLeagueTable() inside method");
+    private void showFixtures(FixturesData fixturesData) {
+        Log.i(TAG, "showFixtures() inside method");
 
         if(fixturesData != null){
 

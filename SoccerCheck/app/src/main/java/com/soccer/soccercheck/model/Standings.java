@@ -38,6 +38,8 @@ public class Standings implements Serializable {
     @JsonProperty("H")
     private List<StandingChampionsLeague> mStandingChampionsLeagueGroupH = new ArrayList<StandingChampionsLeague>();
 
+    private List<List<StandingChampionsLeague>> groups;
+
 
     public List<StandingChampionsLeague> getmStandingChampionsLeagueGroupA() {
         return mStandingChampionsLeagueGroupA;
@@ -101,5 +103,21 @@ public class Standings implements Serializable {
 
     public void setmStandingChampionsLeagueGroupH(List<StandingChampionsLeague> mStandingChampionsLeagueGroupH) {
         this.mStandingChampionsLeagueGroupH = mStandingChampionsLeagueGroupH;
+    }
+
+    public List<List<StandingChampionsLeague>> getGroups() {
+
+        groups = new ArrayList<List<StandingChampionsLeague>>();
+
+        groups.add(mStandingChampionsLeagueGroupA);
+        groups.add(mStandingChampionsLeagueGroupB);
+        groups.add(mStandingChampionsLeagueGroupC);
+        groups.add(mStandingChampionsLeagueGroupD);
+        groups.add(mStandingChampionsLeagueGroupE);
+        groups.add(mStandingChampionsLeagueGroupF);
+        groups.add(mStandingChampionsLeagueGroupG);
+        groups.add(mStandingChampionsLeagueGroupH);
+
+        return groups;
     }
 }

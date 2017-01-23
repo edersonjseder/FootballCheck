@@ -2,6 +2,7 @@ package com.soccer.soccercheck.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.soccer.soccercheck.model.PlayerList;
 import com.soccer.soccercheck.model.Players;
 import com.soccer.soccercheck.path.FBPath;
 
@@ -26,8 +27,8 @@ import retrofit2.http.Path;
 
 public interface PlayersService {
 
-    @GET(FBPath.TEAMS + "/{id}" + FBPath.PLAYERS)
-    Call<List<Players>> getPlayersList(@Path("id") int id);
+    @GET(FBPath.TEAMS + "/{id}/" + FBPath.PLAYERS)
+    Call<PlayerList> getPlayersList(@Path("id") int id);
 
 
     class Factory {
@@ -51,7 +52,7 @@ public interface PlayersService {
 
                     Request.Builder requestBuilder = original.newBuilder()
                             .header("Content-Type", "application/json")
-//                            .header("Authorization", "Bearer 1457d5e4-fae3-439b-bd5e-0b20d505f97b")
+                            .header("X-Auth-Token", "b7076d8e1bf64d9ebbb9bfab768c4bb6")
                             .method(original.method(), original.body());
 
                     Request request = requestBuilder.build();

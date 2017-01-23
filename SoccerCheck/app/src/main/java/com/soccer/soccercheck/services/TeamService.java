@@ -50,7 +50,7 @@ public interface TeamService {
 
                     Request.Builder requestBuilder = original.newBuilder()
                             .header("Content-Type", "application/json")
-//                            .header("Authorization", "Bearer 1457d5e4-fae3-439b-bd5e-0b20d505f97b")
+                            .header("X-Auth-Token", "b7076d8e1bf64d9ebbb9bfab768c4bb6")
                             .method(original.method(), original.body());
 
                     Request request = requestBuilder.build();

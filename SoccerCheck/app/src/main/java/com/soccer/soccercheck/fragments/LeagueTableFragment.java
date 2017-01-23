@@ -1,5 +1,6 @@
 package com.soccer.soccercheck.fragments;
 
+import android.graphics.Color;
 import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,13 +23,17 @@ import com.soccer.soccercheck.adapters.ChampionsLeagueTableAdapter;
 import com.soccer.soccercheck.adapters.LeagueTableAdapter;
 import com.soccer.soccercheck.model.ChampionsLeagueTable;
 import com.soccer.soccercheck.model.LeagueTable;
+import com.soccer.soccercheck.model.StandingChampionsLeague;
 import com.soccer.soccercheck.path.FBPath;
 import com.soccer.soccercheck.services.LeagueTableService;
+import com.soccer.soccercheck.util.SeparatorDecoration;
 import com.soccer.soccercheck.util.SvgDecoder;
 import com.soccer.soccercheck.util.SvgDrawableTranscoder;
 import com.soccer.soccercheck.util.SvgSoftwareLayerSetter;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -102,6 +107,10 @@ public class LeagueTableFragment extends Fragment {
             recyclerViewLeagueTable.setHasFixedSize(true);
             recyclerViewLeagueTable.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+            SeparatorDecoration decoration = new SeparatorDecoration(getContext(), Color.BLUE, 1.5f);
+
+            recyclerViewLeagueTable.addItemDecoration(decoration);
+
             requestBuilder = Glide.with(getActivity())
                     .using(Glide.buildStreamModelLoader(Uri.class, getActivity()), InputStream.class)
                     .from(Uri.class)
@@ -137,7 +146,7 @@ public class LeagueTableFragment extends Fragment {
     }
 
     public void getLeagueTable(Integer id) {
-        Log.i(TAG, "getLeagueTable() inside method " + id);
+        Log.i(TAG, "getFixturesData() inside method " + id);
 
         mCallLeagueTable = LeagueTableService.Factory.create().fetchLeagueTable(id);
 
@@ -208,7 +217,18 @@ public class LeagueTableFragment extends Fragment {
 
         if(championsLeagueTable != null){
 
-            championsLeagueTableAdapter = new ChampionsLeagueTableAdapter(championsLeagueTable, getContext(), requestBuilder);
+            List<StandingChampionsLeague> championsLeagueGroupList = new ArrayList<StandingChampionsLeague>();
+
+            for (int i = 0; i < championsLeagueTable.getStandings().getGroups().size(); i++) {
+
+                for (int j = 0; j < championsLeagueTable.getStandings().getGroups().get(i).size(); j++) {
+
+                    championsLeagueGroupList.add(championsLeagueTable.getStandings().getGroups().get(i).get(j));
+
+                }
+            }
+
+            championsLeagueTableAdapter = new ChampionsLeagueTableAdapter(championsLeagueGroupList, getContext(), requestBuilder);
             recyclerViewLeagueTable.setAdapter(championsLeagueTableAdapter);
 
         }

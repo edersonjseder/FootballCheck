@@ -10,15 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.GenericRequestBuilder;
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.caverock.androidsvg.SVG;
 import com.soccer.soccercheck.R;
-import com.soccer.soccercheck.model.ChampionsLeagueTable;
 import com.soccer.soccercheck.model.StandingChampionsLeague;
-import com.soccer.soccercheck.model.Standings;
+import com.soccer.soccercheck.util.ExtensionLinkGetter;
 import com.soccer.soccercheck.viewHolders.ChampionsLeagueTableViewHolder;
 
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * Created by ederson.js on 01/11/2016.
@@ -27,12 +28,12 @@ import java.io.InputStream;
 public class ChampionsLeagueTableAdapter extends RecyclerView.Adapter<ChampionsLeagueTableViewHolder> {
     private static final String TAG = "ChampionsLeagueTable";
 
-    private Standings leagueTable;
+    List<StandingChampionsLeague> championsLeagueGroupList;
     private Context mContext;
     private GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> requestBuilder;
 
-    public ChampionsLeagueTableAdapter(ChampionsLeagueTable championsLeagueTable, Context context, GenericRequestBuilder requestBuilder) {
-        this.leagueTable = championsLeagueTable.getStandings();
+    public ChampionsLeagueTableAdapter(List<StandingChampionsLeague> championsLeagueGroupList, Context context, GenericRequestBuilder requestBuilder) {
+        this.championsLeagueGroupList = championsLeagueGroupList;
         this.mContext = context;
         this.requestBuilder = requestBuilder;
     }
@@ -40,7 +41,7 @@ public class ChampionsLeagueTableAdapter extends RecyclerView.Adapter<ChampionsL
     @Override
     public ChampionsLeagueTableViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.champions_league_table_content, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_champions_league_table_content, viewGroup, false);
         ChampionsLeagueTableViewHolder mChampionsLeagueTableViewHolder = new ChampionsLeagueTableViewHolder(view);
         view.setTag(mChampionsLeagueTableViewHolder);
 
@@ -51,17 +52,36 @@ public class ChampionsLeagueTableAdapter extends RecyclerView.Adapter<ChampionsL
     public void onBindViewHolder(ChampionsLeagueTableViewHolder leagueTableViewHolder, int position) {
         Log.i(TAG, "onBindViewHolder() inside method " + position);
 
+
         // Gets the position of the item on the List and add the object information
-        final StandingChampionsLeague standingChampionsLeague = this.leagueTable.getmStandingChampionsLeagueGroupA().get(position);
+        final StandingChampionsLeague standingChampionsLeague = championsLeagueGroupList.get(position);
+        String extension = ExtensionLinkGetter.getExtensionFromLink(standingChampionsLeague.getCrestURI());
 
         Log.i(TAG, "inside method | uri: " + standingChampionsLeague.getCrestURI());
 
-        Uri uri = Uri.parse(standingChampionsLeague.getCrestURI());
+        if (standingChampionsLeague.getCrestURI() != null){
 
-        requestBuilder.diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .load(uri)
-                .override(30, 30)
-                .into(leagueTableViewHolder.getImageViewTeamLogoCl());
+            Uri uri = Uri.parse(standingChampionsLeague.getCrestURI());
+
+            if((extension.equals("gif")) || (extension.equals("png")) || (extension.equals("jpg"))) {
+                Log.i(TAG, "inside if - " + extension);
+
+                Glide.with(mContext)
+                        .load(uri)
+                        .override(30, 30)
+                        .into(leagueTableViewHolder.getImageViewTeamLogoCl());
+
+            } else {
+                Log.i(TAG, "inside else - " + extension);
+
+                requestBuilder.diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .load(uri)
+                        .override(30, 30)
+                        .into(leagueTableViewHolder.getImageViewTeamLogoCl());
+
+            }
+
+        }
 
         leagueTableViewHolder.getGroup().setText(standingChampionsLeague.getGroup());
         leagueTableViewHolder.getRank().setText(standingChampionsLeague.getRank().toString());
@@ -81,8 +101,7 @@ public class ChampionsLeagueTableAdapter extends RecyclerView.Adapter<ChampionsL
 
     @Override
     public int getItemCount() {
-        return (leagueTable != null) ? leagueTable.getmStandingChampionsLeagueGroupA().size() : 0;
+        return (championsLeagueGroupList != null) ? championsLeagueGroupList.size() : 0;
     }
-
 
 }

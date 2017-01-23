@@ -8,23 +8,34 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
 import com.soccer.soccercheck.R;
 import com.soccer.soccercheck.fragments.FixturesListFragment;
+import com.soccer.soccercheck.fragments.PlayerDetailFragment;
+import com.soccer.soccercheck.fragments.PlayerListFragment;
 import com.soccer.soccercheck.fragments.SoccerTabFragment;
 import com.soccer.soccercheck.fragments.TeamDetailFragment;
+import com.soccer.soccercheck.listeners.OnPlayerSelectedListener;
 import com.soccer.soccercheck.listeners.OnSendCurrentMatchDayListener;
+import com.soccer.soccercheck.listeners.OnShowPlayerListListener;
 import com.soccer.soccercheck.listeners.OnTeamSelectedListener;
+import com.soccer.soccercheck.model.Players;
 import com.soccer.soccercheck.model.Standing;
 import com.soccer.soccercheck.model.Team;
 import com.soccer.soccercheck.path.FBPath;
+import com.soccer.soccercheck.util.AlertDialogManager;
+import com.soccer.soccercheck.util.ConnectionDetector;
 
 public class SoccerMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnSendCurrentMatchDayListener, OnTeamSelectedListener {
-    private static final String TAG = "MainFootballFragment";
+        implements NavigationView.OnNavigationItemSelectedListener, OnSendCurrentMatchDayListener, OnTeamSelectedListener, OnShowPlayerListListener, OnPlayerSelectedListener {
+    private static final String TAG = "SoccerMainActivity";
+
+    ConnectionDetector detector;
+    AlertDialogManager dialogManager;
 
     private SoccerTabFragment mSoccerTabFragment;
     private FragmentTransaction transaction;
@@ -36,14 +47,27 @@ public class SoccerMainActivity extends AppCompatActivity
     private NavigationView navigationView;
 
     private TeamDetailFragment mTeamDetailFragment;
+    private PlayerDetailFragment mPlayerDetailFragment;
 
-    private String tabFrag;
+    private PlayerListFragment mPlayerListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main_soccer);
+
+        dialogManager = new AlertDialogManager();
+        detector = new ConnectionDetector(getApplicationContext());
+
+        // Check for internet connection
+        if (!detector.isConnectingToInternet()) {
+            // Internet Connection is not present
+            dialogManager.showAlertDialog(SoccerMainActivity.this, "Internet Connection Error",
+                    "Please connect to working Internet connection", false);
+            // stop executing code by return
+            return;
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -60,14 +84,13 @@ public class SoccerMainActivity extends AppCompatActivity
         if (savedInstanceState != null)
             return;
 
-        if (savedInstanceState == null) {
-//            startConfiguration();
-        }
     }
 
 
     private void startTabsSoccerFragment(Integer idCompetition) {
+
         mSoccerTabFragment = SoccerTabFragment.newInstance(idCompetition);
+
         try {
 
             transaction = getSupportFragmentManager().beginTransaction();
@@ -147,14 +170,6 @@ public class SoccerMainActivity extends AppCompatActivity
 
     }
 
-    public String getTabFrag() {
-        return tabFrag;
-    }
-
-    public void setTabFrag(String tabFrag) {
-        this.tabFrag = tabFrag;
-    }
-
     @Override
     public void onTeamSelected(Standing standing, int position) {
 
@@ -171,5 +186,42 @@ public class SoccerMainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void showPlayerList(Integer idTeam) {
+        Log.i(TAG, "showPlayerList() inside method " + idTeam);
+
+        mPlayerListFragment = PlayerListFragment.newInstance(idTeam);
+
+        try {
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.id_content_fragments, mPlayerListFragment);
+            transaction.hide(mTeamDetailFragment);
+            transaction.addToBackStack(mTeamDetailFragment.getClass().getName());
+            transaction.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onPlayerSelected(Players players, int position) {
+        Log.i(TAG, "onPlayerSelected() inside method " + position);
+
+        mPlayerDetailFragment = PlayerDetailFragment.newInstance(players);
+
+        try {
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.id_content_fragments, mPlayerDetailFragment);
+            transaction.hide(mPlayerListFragment);
+            transaction.addToBackStack(mPlayerListFragment.getClass().getName());
+            transaction.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

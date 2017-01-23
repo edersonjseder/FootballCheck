@@ -12,135 +12,11 @@
     android:paddingTop="@dimen/activity_vertical_margin2"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-    <!--LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
-
-            <ImageView
-                android:layout_width="125dp"
-                android:layout_height="125dp"
-                android:id="@+id/id_image_team_logo" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <TextView
-                android:text="Team: "
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:textColor="@color/text_color"
-                android:visibility="invisible"
-                android:id="@+id/textview_team_name_label"
-                android:paddingTop="10dp"
-                android:paddingLeft="10dp"/>
-
-            <TextView
-                android:layout_width="170dp"
-                android:layout_height="match_parent"
-                android:textColor="@color/text_color"
-                android:id="@+id/textview_team_name"
-                android:paddingTop="20dp"
-                android:layout_marginLeft="40dp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <TextView
-                android:text="Shortname: "
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:textColor="@color/text_color"
-                android:visibility="invisible"
-                android:id="@+id/textview_short_name_team_label"
-                android:paddingTop="20dp"
-                android:paddingLeft="10dp"/>
-            <TextView
-                android:layout_width="170dp"
-                android:layout_height="match_parent"
-                android:textColor="@color/text_color"
-                android:id="@+id/textview_short_name_team"
-                android:paddingTop="20dp"
-                android:layout_marginLeft="40dp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <TextView
-                android:text="Code: "
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:textColor="@color/text_color"
-                android:id="@+id/textview_code_team_label"
-                android:visibility="invisible"
-                android:paddingTop="20dp"
-                android:paddingLeft="10dp"/>
-            <TextView
-                android:layout_width="170dp"
-                android:layout_height="match_parent"
-                android:textColor="@color/text_color"
-                android:id="@+id/textview_code_team"
-                android:paddingTop="20dp"
-                android:layout_marginLeft="40dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <TextView
-                android:text="Squad Market Value: "
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:textColor="@color/text_color"
-                android:id="@+id/textview_squad_market_value_team_label"
-                android:visibility="invisible"
-                android:paddingTop="20dp"
-                android:paddingLeft="10dp"/>
-            <TextView
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color"
-                android:id="@+id/textview_squad_market_value_team"
-                android:paddingTop="20dp"
-                android:layout_marginLeft="40dp" />
-
-        </LinearLayout>
-    </LinearLayout-->
-
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:padding="10dp"
         android:background="@drawable/team_detail_border_color">
 
         <RelativeLayout
@@ -164,22 +40,25 @@
             android:padding="5dp">
 
             <TextView
-                android:text="Team: "
+                android:text="@string/label_team_name"
                 android:layout_width="120dp"
-                android:layout_height="40dp"
+                android:layout_height="42dp"
                 android:textColor="@color/text_color"
-                android:visibility="invisible"
                 android:textAlignment="textEnd"
+                android:visibility="invisible"
+                style="@style/text_label_team_detail"
                 android:id="@+id/textview_team_name_label"
                 android:paddingTop="20dp" />
 
             <TextView
-                android:layout_width="150dp"
-                android:layout_height="40dp"
+                android:layout_width="200dp"
+                android:layout_height="42dp"
                 android:textColor="@color/text_color"
                 android:id="@+id/textview_team_name"
                 android:paddingTop="20dp"
                 android:textAlignment="textStart"
+                style="@style/text_label_team_detail"
+                android:paddingLeft="@dimen/padding_text_left"
                 android:layout_toEndOf="@+id/textview_team_name_label" />
 
         </LinearLayout>
@@ -192,22 +71,25 @@
             android:padding="5dp">
 
             <TextView
-                android:text="Shortname: "
+                android:text="@string/label_team_shortname"
                 android:layout_width="120dp"
-                android:layout_height="40dp"
+                android:layout_height="42dp"
                 android:textColor="@color/text_color"
-                android:visibility="invisible"
                 android:textAlignment="textEnd"
+                android:visibility="invisible"
+                style="@style/text_label_team_detail"
                 android:id="@+id/textview_short_name_team_label"
                 android:paddingTop="20dp" />
 
             <TextView
-                android:layout_width="150dp"
-                android:layout_height="40dp"
+                android:layout_width="200dp"
+                android:layout_height="42dp"
                 android:textColor="@color/text_color"
                 android:id="@+id/textview_short_name_team"
                 android:paddingTop="20dp"
                 android:textAlignment="textStart"
+                style="@style/text_label_team_detail"
+                android:paddingLeft="@dimen/padding_text_left"
                 android:layout_toEndOf="@+id/textview_short_name_team_label" />
 
         </LinearLayout>
@@ -220,22 +102,25 @@
             android:padding="5dp">
 
             <TextView
-                android:text="Code: "
+                android:text="@string/label_team_code"
                 android:layout_width="120dp"
-                android:layout_height="40dp"
+                android:layout_height="42dp"
                 android:textColor="@color/text_color"
                 android:id="@+id/textview_code_team_label"
-                android:visibility="invisible"
                 android:textAlignment="textEnd"
+                android:visibility="invisible"
+                style="@style/text_label_team_detail"
                 android:paddingTop="20dp"
                 android:paddingLeft="10dp" />
 
             <TextView
-                android:layout_width="150dp"
-                android:layout_height="40dp"
+                android:layout_width="200dp"
+                android:layout_height="42dp"
                 android:textColor="@color/text_color"
                 android:id="@+id/textview_code_team"
                 android:textAlignment="textStart"
+                style="@style/text_label_team_detail"
+                android:paddingLeft="@dimen/padding_text_left"
                 android:paddingTop="20dp" />
 
         </LinearLayout>
@@ -248,22 +133,25 @@
             android:padding="5dp">
 
             <TextView
-                android:text="Market Value: "
+                android:text="@string/label_team_market_value"
                 android:layout_width="120dp"
-                android:layout_height="40dp"
+                android:layout_height="42dp"
                 android:textColor="@color/text_color"
                 android:id="@+id/textview_squad_market_value_team_label"
-                android:visibility="invisible"
                 android:textAlignment="textEnd"
+                android:visibility="invisible"
+                style="@style/text_label_team_detail"
                 android:paddingTop="20dp"
                 android:layout_toStartOf="@+id/textview_squad_market_value_team" />
 
             <TextView
-                android:layout_width="150dp"
-                android:layout_height="40dp"
+                android:layout_width="200dp"
+                android:layout_height="42dp"
                 android:textColor="@color/text_color"
                 android:id="@+id/textview_squad_market_value_team"
                 android:textAlignment="textStart"
+                style="@style/text_label_team_detail"
+                android:paddingLeft="@dimen/padding_text_left"
                 android:paddingTop="20dp" />
 
         </LinearLayout>
@@ -272,13 +160,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:id="@+id/group_buttons"
+            android:visibility="invisible"
             android:gravity="center_horizontal"
-            android:padding="5dp">
+            android:padding="20dp">
+
+            <Button
+                android:text="@string/label_button_team_players"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_team_players"
+                android:layout_weight="1" />
+
+            <Space
+                android:layout_width="5dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1" />
+
+            <Button
+                android:text="@string/label_button_team_fixtures"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_team_fixtures"
+                android:layout_weight="1" />
 
         </LinearLayout>
 
     </LinearLayout>
-
-
 
 </LinearLayout>

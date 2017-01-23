@@ -9,6 +9,6 @@ import com.soccer.soccercheck.model.Standing;
 public interface OnTeamSelectedListener {
 
     // called when user selects a team
-    public void onTeamSelected(Standing standing, int position);
+    void onTeamSelected(Standing standing, int position);
 
 }

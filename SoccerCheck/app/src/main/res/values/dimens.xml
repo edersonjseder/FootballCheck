@@ -32,4 +32,10 @@
     <dimen name="width_table_position">20dp</dimen>
     <dimen name="width_table_team_name">100dp</dimen>
     <dimen name="width_table_played_games">25dp</dimen>
+
+    <!-- Padding Team Detail Text Label -->
+    <dimen name="padding_text_left">5dp</dimen>
+
+    <!-- Player List Text size -->
+    <dimen name="PlayerListTextSize">13dp</dimen>
 </resources>

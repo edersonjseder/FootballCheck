@@ -28,8 +28,6 @@ public class FixturesListAdapter extends RecyclerView.Adapter<FixturesViewHolder
     private Context context;
     private DateTime time;
     private SimpleDateFormat simpleDateFormat;
-    private FixturesViewHolder fixturesViewHolder;
-    private View.OnClickListener onClickListener;
 
     public FixturesListAdapter(FixturesData fixturesData, Context context) {
         this.fixturesData = fixturesData;

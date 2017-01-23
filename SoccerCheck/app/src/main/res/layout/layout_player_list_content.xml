@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/id_component_card_view_fixtures_list_content"
+    android:layout_width="match_parent"
+    android:padding="5dp"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    tools:showIn="@layout/component_card_view_player_list">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="20"
+            android:id="@+id/textview_player_list_number"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="0.05"
+            android:textColor="@color/colorLabel2"
+            android:textAlignment="center"
+            android:paddingLeft="@dimen/paddingHorizontal"
+            android:textSize="@dimen/PlayerListTextSize"
+            android:gravity="center_horizontal|center_vertical"/>
+
+        <TextView
+            android:text="Cristiano Ronaldo"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="0.15"
+            android:id="@+id/textview_player_list_name"
+            android:textColor="@color/colorLabel2"
+            android:textAlignment="center"
+            android:textSize="@dimen/PlayerListTextSize"
+            android:gravity="center_horizontal|center_vertical"/>
+
+        <TextView
+            android:text="Defensive Midfield"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="0.15"
+            android:id="@+id/textview_player_list_position"
+            android:textSize="@dimen/PlayerListTextSize"
+            android:textColor="@color/colorLabel2"
+            android:gravity="center_horizontal|center_vertical"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

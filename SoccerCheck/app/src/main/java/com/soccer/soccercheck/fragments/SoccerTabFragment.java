@@ -22,7 +22,6 @@ public class SoccerTabFragment extends Fragment {
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private SoccerPagerAdapter pagerAdapter;
-    private Integer matchDay;
 
     public static SoccerTabFragment newInstance(Integer idCompetition) {
 

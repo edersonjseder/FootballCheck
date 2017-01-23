@@ -19,8 +19,6 @@ public class SoccerPagerAdapter extends FragmentStatePagerAdapter {
 
     private int numberOfTabs;
     private int idCompetition;
-    private int matchDay;
-
 
     public SoccerPagerAdapter(FragmentManager fm, int numberOfTabs, int idCompetition) {
         super(fm);

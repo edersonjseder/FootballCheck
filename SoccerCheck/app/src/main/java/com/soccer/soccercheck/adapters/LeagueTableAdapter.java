@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.GenericRequestBuilder;
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.caverock.androidsvg.SVG;
 import com.soccer.soccercheck.R;
@@ -17,6 +18,7 @@ import com.soccer.soccercheck.listeners.OnItemClickListener;
 import com.soccer.soccercheck.listeners.OnTeamSelectedListener;
 import com.soccer.soccercheck.model.LeagueTable;
 import com.soccer.soccercheck.model.Standing;
+import com.soccer.soccercheck.util.ExtensionLinkGetter;
 import com.soccer.soccercheck.viewHolders.LeagueTableViewHolder;
 import com.squareup.picasso.Picasso;
 
@@ -56,15 +58,28 @@ public class LeagueTableAdapter extends RecyclerView.Adapter<LeagueTableViewHold
 
         // Gets the position of the item on the List and add the object information
         final Standing standing = this.leagueTable.get(position);
+        String extension = ExtensionLinkGetter.getExtensionFromLink(standing.getCrestURI());
 
         Log.i(TAG, "inside method | uri: " + standing.getCrestURI());
 
         Uri uri = Uri.parse(standing.getCrestURI());
 
-        requestBuilder.diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .load(uri)
-                .override(30, 30)
-                .into(leagueTableViewHolder.getImageViewTeamLogo());
+        if((extension.equals("gif")) || (extension.equals("png")) || (extension.equals("jpg"))) {
+            Log.i(TAG, "inside if - " + extension);
+
+            Glide.with(mContext)
+                    .load(uri)
+                    .override(30, 30)
+                    .into(leagueTableViewHolder.getImageViewTeamLogo());
+
+        } else {
+
+            requestBuilder.diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .load(uri)
+                    .override(30, 30)
+                    .into(leagueTableViewHolder.getImageViewTeamLogo());
+
+        }
 
         leagueTableViewHolder.getPositionTeam().setText(standing.getPosition().toString());
         leagueTableViewHolder.getTeamName().setText(standing.getTeamName());

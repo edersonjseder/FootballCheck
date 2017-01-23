@@ -5,5 +5,5 @@ package com.soccer.soccercheck.listeners;
  */
 
 public interface OnSendCurrentMatchDayListener {
-    public void onMatchDaySelected(int matchDay);
+    void onMatchDaySelected(int matchDay);
 }

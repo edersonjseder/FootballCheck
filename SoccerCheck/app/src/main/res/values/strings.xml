@@ -21,7 +21,7 @@
     <string name="premiere_league">Premiere League</string>
     <string name="title_activity_soccer_main">SoccerActivityMain</string>
 
-    <string name="title_tab_competition">Competition</string>
+    <string name="title_tab_competition">League</string>
     <string name="title_tab_league_table">Table</string>
     <string name="title_tab_fixtures_list">Fixtures</string>
 
@@ -37,6 +37,21 @@
     <string name="draws">Draws</string>
     <string name="losses">Losses</string>
 
+    <!-- Team Detail Label -->
+    <string name="label_team_name">Name: </string>
+    <string name="label_team_shortname">Shortname: </string>
+    <string name="label_team_code">Team Code: </string>
+    <string name="label_team_market_value">Market Value: </string>
+
+    <!-- Player Detail Label -->
+    <string name="label_Player_name">Name: </string>
+    <string name="label_player_position">Position: </string>
+    <string name="label_player_number">Player Number: </string>
+    <string name="label_player_date_birth">Birth date: </string>
+    <string name="label_player_nationality">Nationality: </string>
+    <string name="label_player_contract_until">End Contract: </string>
+    <string name="label_player_market_value">Market Value: </string>
+
     <!-- Champions League Table Label -->
     <string name="group">Group</string>
     <string name="rank">Rank</string>
@@ -47,5 +62,8 @@
     <string name="goalsAgainstCL">Goals Against</string>
     <string name="goalDifferenceCL">Goal Difference</string>
 
+    <!-- Buttons Team Detail Label -->
+    <string name="label_button_team_players">Players</string>
+    <string name="label_button_team_fixtures">Fixtures</string>
 
 </resources>

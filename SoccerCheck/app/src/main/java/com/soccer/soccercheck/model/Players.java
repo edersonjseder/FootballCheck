@@ -2,14 +2,13 @@ package com.soccer.soccercheck.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
+
 /**
  * Created by ederson.js on 21/11/2016.
  */
 
-public class Players {
-
-    @JsonProperty("id")
-    private Integer id;
+public class Players implements Serializable {
 
     @JsonProperty("name")
     private String name;
@@ -32,13 +31,6 @@ public class Players {
     @JsonProperty("marketValue")
     private String marketValue;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

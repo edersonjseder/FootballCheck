@@ -9,8 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.GenericRequestBuilder;
 import com.bumptech.glide.Glide;
@@ -19,9 +22,11 @@ import com.bumptech.glide.load.model.StreamEncoder;
 import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
 import com.caverock.androidsvg.SVG;
 import com.soccer.soccercheck.R;
+import com.soccer.soccercheck.listeners.OnShowPlayerListListener;
 import com.soccer.soccercheck.model.Standing;
 import com.soccer.soccercheck.model.Team;
 import com.soccer.soccercheck.services.TeamService;
+import com.soccer.soccercheck.util.ExtensionLinkGetter;
 import com.soccer.soccercheck.util.SvgDecoder;
 import com.soccer.soccercheck.util.SvgDrawableTranscoder;
 import com.soccer.soccercheck.util.SvgSoftwareLayerSetter;
@@ -52,7 +57,14 @@ public class TeamDetailFragment extends Fragment {
     private TextView textViewCodeTeamLabel;
     private TextView textViewSquadMarketValueTeamLabel;
 
+    private LinearLayout groupButtons;
+
+    private Button btnPlayers;
+    private Button btnFixtures;
+
     private Call<Team> mCallTeam;
+
+    private Team mTeam;
 
     private GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> requestBuilder;
 
@@ -78,7 +90,7 @@ public class TeamDetailFragment extends Fragment {
 
         Log.i(TAG, "Standing Value Link: " + mStanding.getLinks().getTeam().getHref());
 
-        int idTeam = getIdFromLink(mStanding);
+        int idTeam = getIdFromLink(mStanding.getLinks().getTeam().getHref());
 
         if (savedInstanceState != null)
             return;
@@ -93,19 +105,29 @@ public class TeamDetailFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_team_detail_soccer, container, false);
+        Log.i(TAG, "onCreateView() inside method");
 
-        imageTeamLogo = (ImageView) v.findViewById(R.id.id_image_team_logo);
+        View view = inflater.inflate(R.layout.fragment_team_detail_soccer, container, false);
 
-        textViewNameTeam = (TextView) v.findViewById(R.id.textview_team_name);
-        textViewShortNameTeam = (TextView) v.findViewById(R.id.textview_short_name_team);
-        textViewCodeTeam = (TextView) v.findViewById(R.id.textview_code_team);
-        textViewSquadMarketValueTeam = (TextView) v.findViewById(R.id.textview_squad_market_value_team);
+        imageTeamLogo = (ImageView) view.findViewById(R.id.id_image_team_logo);
 
-        textViewNameTeamLabel = (TextView) v.findViewById(R.id.textview_team_name_label);
-        textViewShortNameTeamLabel = (TextView) v.findViewById(R.id.textview_short_name_team_label);
-        textViewCodeTeamLabel = (TextView) v.findViewById(R.id.textview_code_team_label);
-        textViewSquadMarketValueTeamLabel = (TextView) v.findViewById(R.id.textview_squad_market_value_team_label);
+        textViewNameTeam = (TextView) view.findViewById(R.id.textview_team_name);
+        textViewShortNameTeam = (TextView) view.findViewById(R.id.textview_short_name_team);
+        textViewCodeTeam = (TextView) view.findViewById(R.id.textview_code_team);
+        textViewSquadMarketValueTeam = (TextView) view.findViewById(R.id.textview_squad_market_value_team);
+
+        textViewNameTeamLabel = (TextView) view.findViewById(R.id.textview_team_name_label);
+        textViewShortNameTeamLabel = (TextView) view.findViewById(R.id.textview_short_name_team_label);
+        textViewCodeTeamLabel = (TextView) view.findViewById(R.id.textview_code_team_label);
+        textViewSquadMarketValueTeamLabel = (TextView) view.findViewById(R.id.textview_squad_market_value_team_label);
+
+        groupButtons = (LinearLayout) view.findViewById(R.id.group_buttons);
+
+        btnPlayers = (Button) view.findViewById(R.id.btn_team_players);
+        btnFixtures = (Button) view.findViewById(R.id.btn_team_fixtures);
+
+        btnPlayers.setOnClickListener(onClickShowPlayersListener);
+        btnFixtures.setOnClickListener(onClickShowFixturesListener);
 
         requestBuilder = Glide.with(getActivity())
                 .using(Glide.buildStreamModelLoader(Uri.class, getActivity()), InputStream.class)
@@ -117,7 +139,7 @@ public class TeamDetailFragment extends Fragment {
                 .decoder(new SvgDecoder())
                 .listener(new SvgSoftwareLayerSetter<Uri>());
 
-        return v;
+        return view;
     }
 
     public void getTeamInfo(Integer id) {
@@ -128,11 +150,11 @@ public class TeamDetailFragment extends Fragment {
             @Override
             public void onResponse(Call<Team> call, Response<Team> response) {
 
-                Team mTeam = response.body();
+                setmTeam(response.body());
 
-                if(mTeam != null) {
+                if(getmTeam() != null) {
 
-                    showTeamInfo(mTeam);
+                    showTeamInfo(getmTeam());
 
                 }
 
@@ -154,35 +176,82 @@ public class TeamDetailFragment extends Fragment {
 
             loadNet(mTeam.getCrestUrl());
 
-            textViewNameTeamLabel.setVisibility(View.VISIBLE);
-            textViewShortNameTeamLabel.setVisibility(View.VISIBLE);
-            textViewCodeTeamLabel.setVisibility(View.VISIBLE);
-            textViewSquadMarketValueTeamLabel.setVisibility(View.VISIBLE);
-
             textViewNameTeam.setText(mTeam.getName());
             textViewShortNameTeam.setText(mTeam.getShortName());
             textViewCodeTeam.setText(mTeam.getCode());
             textViewSquadMarketValueTeam.setText(mTeam.getSquadMarketValue());
 
+            textViewNameTeamLabel.setVisibility(View.VISIBLE);
+            textViewShortNameTeamLabel.setVisibility(View.VISIBLE);
+            textViewCodeTeamLabel.setVisibility(View.VISIBLE);
+            textViewSquadMarketValueTeamLabel.setVisibility(View.VISIBLE);
+
+            groupButtons.setVisibility(View.VISIBLE);
+
         }
 
     }
+
+    private View.OnClickListener onClickShowPlayersListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            Log.i(TAG, "onClick() inside method");
+
+            Log.i(TAG, "URL " + getmTeam().getLinks().getSelf().getHref());
+
+            int idTeam = getIdFromLink(getmTeam().getLinks().getSelf().getHref());
+
+            Log.i(TAG, "ID " + idTeam);
+
+            ((OnShowPlayerListListener)getContext()).showPlayerList(idTeam);
+
+        }
+
+    };
+
+    private View.OnClickListener onClickShowFixturesListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+
+            Toast.makeText(getContext(), "OnShowFixturesTeam", Toast.LENGTH_SHORT).show();
+
+        }
+
+    };
 
     private void loadNet(String url) {
 
         Uri uri = Uri.parse(url);
 
-        requestBuilder.diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                // SVG cannot be serialized so it's not worth to cache it
-                .load(uri)
-                .into(imageTeamLogo);
+        String extension = ExtensionLinkGetter.getExtensionFromLink(url);
+
+        if((extension.equals("gif")) || (extension.equals("png")) || (extension.equals("jpg"))) {
+            Log.i(TAG, "inside if - " + extension);
+
+            Glide.with(getActivity())
+                    .load(uri)
+                    .override(125, 125)
+                    .into(imageTeamLogo);
+
+        } else {
+
+            requestBuilder.diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    // SVG cannot be serialized so it's not worth to cache it
+                    .load(uri)
+                    .override(125, 125)
+                    .into(imageTeamLogo);
+
+        }
+
     }
 
-    public int getIdFromLink(Standing standing) {
+    public int getIdFromLink(String url) {
         Log.i(TAG, "getIdFromLink() inside method");
 
         int idTeam = 0;
-        String[] link = standing.getLinks().getTeam().getHref().split("/");
+        String[] link = url.split("\\/");
 
         for (int i = 0; i < link.length; i++){
             Log.i(TAG, "inside for: " + link[i]);
@@ -198,5 +267,13 @@ public class TeamDetailFragment extends Fragment {
         }
 
         return idTeam;
+    }
+
+    public Team getmTeam() {
+        return mTeam;
+    }
+
+    public void setmTeam(Team mTeam) {
+        this.mTeam = mTeam;
     }
 }
