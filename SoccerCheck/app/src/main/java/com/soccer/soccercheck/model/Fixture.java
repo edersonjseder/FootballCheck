@@ -1,11 +1,14 @@
 package com.soccer.soccercheck.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.Serializable;
 
 /**
  * Created by root on 19/11/16.
  */
-public class Fixture {
+public class Fixture implements Serializable {
 
     @JsonProperty("_links")
     private Links links;
@@ -31,7 +34,15 @@ public class Fixture {
     @JsonProperty("odds")
     private Odds odds;
 
-    @JsonProperty("_links")
+    @JsonIgnore
+    private Team homeTeam;
+
+    @JsonIgnore
+    private Team awayTeam;
+
+    @JsonIgnore
+    private String competitionName;
+
     public Links getLinks() {
         return links;
     }
@@ -40,7 +51,6 @@ public class Fixture {
         this.links = links;
     }
 
-    @JsonProperty("date")
     public String getDate() {
         return date;
     }
@@ -49,7 +59,6 @@ public class Fixture {
         this.date = date;
     }
 
-    @JsonProperty("status")
     public String getStatus() {
         return status;
     }
@@ -58,7 +67,6 @@ public class Fixture {
         this.status = status;
     }
 
-    @JsonProperty("matchday")
     public Integer getMatchday() {
         return matchday;
     }
@@ -67,7 +75,6 @@ public class Fixture {
         this.matchday = matchday;
     }
 
-    @JsonProperty("homeTeamName")
     public String getHomeTeamName() {
         return homeTeamName;
     }
@@ -76,7 +83,6 @@ public class Fixture {
         this.homeTeamName = homeTeamName;
     }
 
-    @JsonProperty("awayTeamName")
     public String getAwayTeamName() {
         return awayTeamName;
     }
@@ -85,7 +91,6 @@ public class Fixture {
         this.awayTeamName = awayTeamName;
     }
 
-    @JsonProperty("result")
     public Result getResult() {
         return result;
     }
@@ -100,5 +105,29 @@ public class Fixture {
 
     public void setOdds(Odds odds) {
         this.odds = odds;
+    }
+
+    public Team getHomeTeam() {
+        return homeTeam;
+    }
+
+    public void setHomeTeam(Team homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+
+    public Team getAwayTeam() {
+        return awayTeam;
+    }
+
+    public void setAwayTeam(Team awayTeam) {
+        this.awayTeam = awayTeam;
+    }
+
+    public String getCompetitionName() {
+        return competitionName;
+    }
+
+    public void setCompetitionName(String competitionName) {
+        this.competitionName = competitionName;
     }
 }

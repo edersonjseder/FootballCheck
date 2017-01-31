@@ -40,6 +40,37 @@
             android:padding="5dp">
 
             <TextView
+                android:text="@string/label_player_number"
+                android:layout_width="150dp"
+                android:layout_height="42dp"
+                android:textColor="@color/text_color"
+                android:id="@+id/textview_player_detail_number_label"
+                android:textAlignment="textEnd"
+                style="@style/text_label_player_detail"
+                android:visibility="invisible"
+                android:paddingTop="20dp"
+                android:paddingLeft="10dp" />
+
+            <TextView
+                android:layout_width="170dp"
+                android:layout_height="42dp"
+                android:textColor="@color/text_color"
+                android:id="@+id/textview_player_detail_number"
+                android:textAlignment="textStart"
+                style="@style/text_label_player_detail"
+                android:paddingLeft="@dimen/padding_text_left"
+                android:paddingTop="20dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:padding="5dp">
+
+            <TextView
                 android:text="@string/label_Player_name"
                 android:layout_width="150dp"
                 android:layout_height="42dp"
@@ -102,37 +133,6 @@
             android:padding="5dp">
 
             <TextView
-                android:text="@string/label_player_number"
-                android:layout_width="150dp"
-                android:layout_height="42dp"
-                android:textColor="@color/text_color"
-                android:id="@+id/textview_player_detail_number_label"
-                android:textAlignment="textEnd"
-                style="@style/text_label_player_detail"
-                android:visibility="invisible"
-                android:paddingTop="20dp"
-                android:paddingLeft="10dp" />
-
-            <TextView
-                android:layout_width="170dp"
-                android:layout_height="42dp"
-                android:textColor="@color/text_color"
-                android:id="@+id/textview_player_detail_number"
-                android:textAlignment="textStart"
-                style="@style/text_label_player_detail"
-                android:paddingLeft="@dimen/padding_text_left"
-                android:paddingTop="20dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal"
-            android:padding="5dp">
-
-            <TextView
                 android:text="@string/label_player_date_birth"
                 android:layout_width="150dp"
                 android:layout_height="42dp"
@@ -171,6 +171,7 @@
                 android:id="@+id/textview_player_detail_nationality_label"
                 android:textAlignment="textEnd"
                 style="@style/text_label_player_detail"
+                android:visibility="invisible"
                 android:paddingTop="20dp"
                 android:layout_toStartOf="@+id/textview_player_detail_nationality" />
 

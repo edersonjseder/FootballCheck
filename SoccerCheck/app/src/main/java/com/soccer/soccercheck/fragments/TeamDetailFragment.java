@@ -1,5 +1,6 @@
 package com.soccer.soccercheck.fragments;
 
+import android.app.Dialog;
 import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.bumptech.glide.load.model.StreamEncoder;
 import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
 import com.caverock.androidsvg.SVG;
 import com.soccer.soccercheck.R;
+import com.soccer.soccercheck.listeners.OnShowFixtureListListener;
 import com.soccer.soccercheck.listeners.OnShowPlayerListListener;
 import com.soccer.soccercheck.model.Standing;
 import com.soccer.soccercheck.model.Team;
@@ -64,6 +66,8 @@ public class TeamDetailFragment extends Fragment {
 
     private Call<Team> mCallTeam;
 
+    private Dialog progress;
+
     private Team mTeam;
 
     private GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> requestBuilder;
@@ -88,6 +92,10 @@ public class TeamDetailFragment extends Fragment {
         Bundle args = getArguments();
         Standing mStanding = (Standing) args.getSerializable(STANDING);
 
+        progress = new Dialog(getContext(), R.style.CustomProgressBar);
+        progress.setContentView(R.layout.component_progress_bar);
+        progress.setTitle("Loading...");
+
         Log.i(TAG, "Standing Value Link: " + mStanding.getLinks().getTeam().getHref());
 
         int idTeam = getIdFromLink(mStanding.getLinks().getTeam().getHref());
@@ -106,6 +114,8 @@ public class TeamDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView() inside method");
+
+        progress.show();
 
         View view = inflater.inflate(R.layout.fragment_team_detail_soccer, container, false);
 
@@ -158,12 +168,20 @@ public class TeamDetailFragment extends Fragment {
 
                 }
 
+                if (progress.isShowing()){
+                    progress.dismiss();
+                }
+
             }
 
             @Override
             public void onFailure(Call<Team> call, Throwable t) {
                 Log.i(TAG, "onFailure() inside method");
                 t.printStackTrace();
+
+                if (progress.isShowing()){
+                    progress.dismiss();
+                }
             }
         });
 
@@ -196,7 +214,7 @@ public class TeamDetailFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Log.i(TAG, "onClick() inside method");
+            Log.i(TAG, "onClickShowPlayersListener - onClick() inside method");
 
             Log.i(TAG, "URL " + getmTeam().getLinks().getSelf().getHref());
 
@@ -214,8 +232,15 @@ public class TeamDetailFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            Log.i(TAG, "onClickShowFixturesListener - onClick() inside method");
 
-            Toast.makeText(getContext(), "OnShowFixturesTeam", Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "URL " + getmTeam().getLinks().getFixtures().getHref());
+
+            int idTeam = getIdFromLink(getmTeam().getLinks().getFixtures().getHref());
+
+            Log.i(TAG, "ID " + idTeam);
+
+            ((OnShowFixtureListListener)getContext()).showFixtureList(idTeam, getmTeam().getCode());
 
         }
 

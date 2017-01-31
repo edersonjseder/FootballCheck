@@ -8,7 +8,7 @@ import com.soccer.soccercheck.model.Fixture;
 
 public interface OnFixtureItemSelectedListener {
 
-    // called when user selects a contact
-    public void onFixtureItemSelected(Fixture fixture, int position);
+    // called when user selects a fixture from the list
+    void onFixtureItemSelected(Fixture fixture, int position, String teamCode);
 
 }

@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_fragment_player_detail_soccer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/field"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin2"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:background="@drawable/team_detail_border_color">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:background="@drawable/team_detail_border_color">
+
+            <LinearLayout
+                android:padding="@dimen/padding_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.35"
+                    android:layout_height="20dp"
+                    android:id="@+id/textview_fixture_detail_competition_title"
+                    android:textSize="@dimen/text_fixture_detail_competition_title"
+                    android:textColor="@color/colorLabel2"
+                    android:gravity="center_horizontal"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/id_linearlayout_title"
+                android:layout_marginBottom="@dimen/bottom_margin"
+                android:paddingTop="@dimen/padding_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="Fixture"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/textview_fixture_detail_title"
+                    android:textSize="@dimen/TextSizeFixtureTitle"
+                    android:textColor="@color/colorLabel2"
+                    android:gravity="center_horizontal"/>
+
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/textview_fixture_detail_title_match_day"
+                    android:textSize="@dimen/TextSizeFixtureTitle"
+                    android:textColor="@color/colorLabel2"
+                    android:gravity="start"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/id_linearlayout_team_images"
+                android:layout_marginBottom="@dimen/bottom_margin"
+                android:padding="@dimen/padding_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/imageview_fixture_detail_home_team"
+                    android:gravity="center_horizontal"/>
+
+                <Space
+                    android:layout_width="156dp"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/imageview_fixture_detail_away_team"
+                    android:gravity="center_horizontal"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/id_linearlayout_teams_score"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/padding_all"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="FC Barcelona"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.35"
+                    android:id="@+id/textview_fixture_detail_home_team_name"
+                    android:textColor="@color/colorLabel2"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/TextSize"
+                    android:gravity="center_horizontal"/>
+
+                <TextView
+                    android:text="0"
+                    android:id="@+id/textview_fixture_detail_score_home_team"
+                    android:layout_gravity="center_horizontal|start"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.07"
+                    android:textColor="@color/colorLabel2"
+                    android:textAlignment="center"
+                    android:paddingLeft="@dimen/paddingHorizontal"
+                    android:textSize="@dimen/TextSize"
+                    android:gravity="center_horizontal"/>
+
+                <TextView
+                    android:text="vs"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.08"
+                    android:textColor="@color/colorLabel2"
+                    android:textAlignment="center"
+                    android:paddingLeft="@dimen/paddingHorizontal"
+                    android:paddingRight="@dimen/paddingHorizontal"
+                    android:textSize="@dimen/TextSize"
+                    android:gravity="center_horizontal"/>
+
+                <TextView
+                    android:text="0"
+                    android:id="@+id/textview_fixture_detail_score_away_team"
+                    android:layout_gravity="center_horizontal|end"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.07"
+                    android:textColor="@color/colorLabel2"
+                    android:textAlignment="center"
+                    android:paddingRight="@dimen/paddingHorizontal"
+                    android:textSize="@dimen/TextSize"
+                    android:gravity="center_horizontal"/>
+
+
+                <TextView
+                    android:text="AC Milan"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.35"
+                    android:id="@+id/textview_fixture_detail_away_team_name"
+                    android:textSize="@dimen/TextSize"
+                    android:textColor="@color/colorLabel2"
+                    android:gravity="center_horizontal"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/id_linearlayout_fixture_teams_time"
+                android:layout_marginBottom="@dimen/bottom_margin"
+                android:padding="@dimen/padding_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="22/12/2014"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/textview_fixture_detail_date"
+                    android:textSize="@dimen/TextSizeFixtureTime"
+                    android:textColor="@color/colorLabel2"
+                    android:gravity="center_horizontal"/>
+
+                <TextView
+                    android:text="20:00"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/textview_fixture_detail_time"
+                    android:textSize="@dimen/TextSizeFixtureTime"
+                    android:textColor="@color/colorLabel2"
+                    android:gravity="center_horizontal"/>
+
+                <TextView
+                    android:text="Finished"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/textview_fixture_detail_status"
+                    android:textSize="@dimen/TextSizeFixtureTime"
+                    android:textColor="@color/colorLabel2"
+                    android:gravity="center_horizontal"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <!-- Halftime code block -->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingTop="8dp"
+            android:background="@drawable/team_detail_border_color">
+
+            <LinearLayout
+                android:id="@+id/id_linearlayout_title_halftime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="Halftime"
+                    android:layout_width="70dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/textview_fixture_detail_title_halftime"
+                    android:textSize="@dimen/TextSizeFixtureTitle"
+                    android:textColor="@color/colorLabel2"
+                    android:gravity="center_horizontal"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/id_linearlayout_teams_score_halftime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/padding_all"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="FC Barcelona"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.35"
+                    android:id="@+id/textview_fixture_detail_home_team_name_halftime"
+                    android:textColor="@color/colorLabel2"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/TextSize"
+                    android:gravity="center_horizontal"/>
+
+                <TextView
+                    android:text="0"
+                    android:id="@+id/textview_fixture_detail_score_home_team_halftime"
+                    android:layout_gravity="center_horizontal|start"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.07"
+                    android:textColor="@color/colorLabel2"
+                    android:textAlignment="center"
+                    android:paddingLeft="@dimen/paddingHorizontal"
+                    android:textSize="@dimen/TextSize"
+                    android:gravity="center_horizontal"/>
+
+                <TextView
+                    android:text="vs"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.08"
+                    android:textColor="@color/colorLabel2"
+                    android:textAlignment="center"
+                    android:paddingLeft="@dimen/paddingHorizontal"
+                    android:paddingRight="@dimen/paddingHorizontal"
+                    android:textSize="@dimen/TextSize"
+                    android:gravity="center_horizontal"/>
+
+                <TextView
+                    android:text="0"
+                    android:id="@+id/textview_fixture_detail_score_away_team_halftime"
+                    android:layout_gravity="center_horizontal|end"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.07"
+                    android:textColor="@color/colorLabel2"
+                    android:textAlignment="center"
+                    android:paddingRight="@dimen/paddingHorizontal"
+                    android:textSize="@dimen/TextSize"
+                    android:gravity="center_horizontal"/>
+
+
+                <TextView
+                    android:text="AC Milan"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.35"
+                    android:id="@+id/textview_fixture_detail_away_team_name_halftime"
+                    android:textSize="@dimen/TextSize"
+                    android:textColor="@color/colorLabel2"
+                    android:gravity="center_horizontal"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

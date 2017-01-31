@@ -23,7 +23,6 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayersListViewHolde
 
     private List<Players> playersList;
     private Context context;
-    private Players mPlayers;
 
     public PlayerListAdapter(PlayerList playerList, Context context) {
         this.playersList = playerList.getPlayers();
@@ -44,7 +43,7 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayersListViewHolde
     public void onBindViewHolder(PlayersListViewHolder playersListViewHolder, int position) {
 
         // Gets the position of the item on the List and add the object information
-        mPlayers = playersList.get(position);
+        final Players mPlayers = playersList.get(position);
 
         Integer playerNumber = mPlayers.getJerseyNumber();
 

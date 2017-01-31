@@ -2,6 +2,7 @@ package com.soccer.soccercheck.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.soccer.soccercheck.model.FixturesData;
 import com.soccer.soccercheck.model.Team;
 import com.soccer.soccercheck.path.FBPath;
 
@@ -28,6 +29,9 @@ public interface TeamService {
 
     @GET(FBPath.TEAMS + "/{id}")
     Call<Team> getTeam(@Path("id") int id);
+
+    @GET(FBPath.TEAMS + "/{id}/" + FBPath.FIXTURES)
+    Call<FixturesData> fetchTeamFixturesById(@Path("id") int id);
 
     class Factory {
 

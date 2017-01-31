@@ -2,31 +2,33 @@ package com.soccer.soccercheck.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
+
 /**
  * Created by root on 19/11/16.
  */
 
-public class HalfTime {
+public class HalfTime implements Serializable {
 
     @JsonProperty("goalsHomeTeam")
-    private Object goalsHomeTeam;
+    private Integer goalsHomeTeam;
 
     @JsonProperty("goalsAwayTeam")
-    private Object goalsAwayTeam;
+    private Integer goalsAwayTeam;
 
-    public Object getGoalsHomeTeam() {
+    public Integer getGoalsHomeTeam() {
         return goalsHomeTeam;
     }
 
-    public void setGoalsHomeTeam(Object goalsHomeTeam) {
+    public void setGoalsHomeTeam(Integer goalsHomeTeam) {
         this.goalsHomeTeam = goalsHomeTeam;
     }
 
-    public Object getGoalsAwayTeam() {
+    public Integer getGoalsAwayTeam() {
         return goalsAwayTeam;
     }
 
-    public void setGoalsAwayTeam(Object goalsAwayTeam) {
+    public void setGoalsAwayTeam(Integer goalsAwayTeam) {
         this.goalsAwayTeam = goalsAwayTeam;
     }
 }

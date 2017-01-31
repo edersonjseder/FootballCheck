@@ -1,5 +1,6 @@
 package com.soccer.soccercheck.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -33,6 +34,8 @@ public class PlayerListFragment extends Fragment {
 
     private Call<PlayerList> mCallPlayerList;
 
+    private Dialog progress;
+
     public static PlayerListFragment newInstance(Integer idTeam) {
         Log.i(TAG, "newInstance() inside method " + idTeam);
 
@@ -53,6 +56,10 @@ public class PlayerListFragment extends Fragment {
         Bundle args = getArguments();
         int idTeam = args.getInt(IDTEAM);
 
+        progress = new Dialog(getContext(), R.style.CustomProgressBar);
+        progress.setContentView(R.layout.component_progress_bar);
+        progress.setTitle("Loading...");
+
         Log.i(TAG, "IDTEAM " + idTeam);
 
         if (savedInstanceState != null)
@@ -67,6 +74,9 @@ public class PlayerListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        progress.show();
+
         View view = inflater.inflate(R.layout.fragment_player_list_soccer, container, false);
 
         recyclerViewPlayerList = (RecyclerView) view.findViewById(R.id.id_recycler_view_player_list);
@@ -92,12 +102,20 @@ public class PlayerListFragment extends Fragment {
                     showPlayerList(playerList);
 
                 }
+
+                if (progress.isShowing()){
+                    progress.dismiss();
+                }
             }
 
             @Override
             public void onFailure(Call<PlayerList> call, Throwable t) {
                 Log.e(TAG, "onFailure() inside method");
                 t.printStackTrace();
+
+                if (progress.isShowing()){
+                    progress.dismiss();
+                }
             }
         });
     }

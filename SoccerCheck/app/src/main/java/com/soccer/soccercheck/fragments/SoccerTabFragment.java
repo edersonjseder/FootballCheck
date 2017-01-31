@@ -1,5 +1,6 @@
 package com.soccer.soccercheck.fragments;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ public class SoccerTabFragment extends Fragment {
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private SoccerPagerAdapter pagerAdapter;
+    private Dialog progress;
 
     public static SoccerTabFragment newInstance(Integer idCompetition) {
 
@@ -38,6 +40,10 @@ public class SoccerTabFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        progress = new Dialog(getContext(), R.style.CustomProgressBar);
+        progress.setContentView(R.layout.component_progress_bar);
+        progress.setTitle("Loading...");
+
         if (savedInstanceState != null)
             return;
 
@@ -46,6 +52,8 @@ public class SoccerTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        progress.show();
+
         View v = inflater.inflate(R.layout.fragment_tab_layout_soccer, container, false);
 
         Bundle args = getArguments();
@@ -59,7 +67,7 @@ public class SoccerTabFragment extends Fragment {
 
         viewPager = (ViewPager) v.findViewById(R.id.pager);
 
-        pagerAdapter = new SoccerPagerAdapter(getFragmentManager(), tabLayout.getTabCount(), idCompetition);
+        pagerAdapter = new SoccerPagerAdapter(getFragmentManager(), tabLayout.getTabCount(), idCompetition, progress);
 
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

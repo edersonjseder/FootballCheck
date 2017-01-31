@@ -2,6 +2,7 @@ package com.soccer.soccercheck.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.soccer.soccercheck.model.FixtureDetail;
 import com.soccer.soccercheck.model.FixturesData;
 import com.soccer.soccercheck.path.FBPath;
 
@@ -28,6 +29,9 @@ public interface FixturesDataService {
 
     @GET(FBPath.FIXTURES)
     Observable<FixturesData> getFixtures();
+
+    @GET(FBPath.FIXTURES + "/{number}")
+    Observable<FixtureDetail> getFixtureDetails(@Path("number") int number);
 
     @GET(FBPath.COMPETITIONS + "/{id}/" + FBPath.FIXTURES)
     Call<FixturesData> fetchFixturesById(@Path("id") int id);

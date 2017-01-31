@@ -1,5 +1,6 @@
 package com.soccer.soccercheck.adapters;
 
+import android.app.Dialog;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -19,11 +20,13 @@ public class SoccerPagerAdapter extends FragmentStatePagerAdapter {
 
     private int numberOfTabs;
     private int idCompetition;
+    private Dialog progress;
 
-    public SoccerPagerAdapter(FragmentManager fm, int numberOfTabs, int idCompetition) {
+    public SoccerPagerAdapter(FragmentManager fm, int numberOfTabs, int idCompetition, Dialog progress) {
         super(fm);
         this.numberOfTabs = numberOfTabs;
         this.idCompetition = idCompetition;
+        this.progress = progress;
     }
 
     @Override

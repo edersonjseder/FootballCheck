@@ -1,5 +1,6 @@
 package com.soccer.soccercheck.fragments;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -39,6 +40,8 @@ public class CompetitionInfoFragment extends Fragment {
     private Call<Competition> mCallCompetition;
     private Competition mCompetition;
 
+    private Dialog progress;
+
     // Container Activity must implement this interface
     private OnSendCurrentMatchDayListener onCallBack;
 
@@ -75,6 +78,12 @@ public class CompetitionInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        progress = new Dialog(getContext(), R.style.CustomProgressBar);
+        progress.setContentView(R.layout.component_progress_bar);
+        progress.setTitle("Loading...");
+        progress.show();
+
         View v = inflater.inflate(R.layout.fragment_competitions_soccer, container, false);
 
         imageCompetitionLogo = (ImageView) v.findViewById(R.id.id_image_logo);
@@ -113,6 +122,10 @@ public class CompetitionInfoFragment extends Fragment {
             public void onFailure(Call<Competition> call, Throwable t) {
                 Log.i(TAG, "onFailure() inside method");
                 t.printStackTrace();
+
+                if (progress.isShowing()){
+                    progress.dismiss();
+                }
             }
         });
 
@@ -158,6 +171,10 @@ public class CompetitionInfoFragment extends Fragment {
 
                 imageCompetitionLogo.setImageResource(R.drawable.serie_a_logo);
 
+            }
+
+            if (progress.isShowing()){
+                progress.dismiss();
             }
 
             // code that passes the matchDay parameter to the activity

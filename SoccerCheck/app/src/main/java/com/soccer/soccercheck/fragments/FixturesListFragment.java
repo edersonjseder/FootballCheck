@@ -1,5 +1,6 @@
 package com.soccer.soccercheck.fragments;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,31 +14,62 @@ import android.view.ViewGroup;
 
 import com.soccer.soccercheck.R;
 import com.soccer.soccercheck.adapters.FixturesListAdapter;
+import com.soccer.soccercheck.listeners.OnPostTaskAwayTeamListener;
+import com.soccer.soccercheck.listeners.OnPostTaskCompetitionListener;
+import com.soccer.soccercheck.listeners.OnPostTaskHomeTeamListener;
+import com.soccer.soccercheck.model.Competition;
 import com.soccer.soccercheck.model.FixturesData;
+import com.soccer.soccercheck.model.Team;
+import com.soccer.soccercheck.services.CompetitionsService;
 import com.soccer.soccercheck.services.FixturesDataService;
+import com.soccer.soccercheck.services.TeamService;
+import com.soccer.soccercheck.util.AwayTeamInfo;
+import com.soccer.soccercheck.util.CompetitionInfo;
+import com.soccer.soccercheck.util.HomeTeamInfo;
+
+import java.io.IOException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FixturesListFragment extends Fragment {
+public class FixturesListFragment extends Fragment implements OnPostTaskHomeTeamListener,
+        OnPostTaskAwayTeamListener, OnPostTaskCompetitionListener {
+
     private static final String TAG = "FixturesListFragment";
     private static final String TITLE = "Table";
 
     public static final String MATCHDAY = "matchday";
+    public static final String TEAMCODE = "teamCode";
 
     private RecyclerView recyclerViewFixturesList;
     private FixturesListAdapter fixturesListAdapter;
 
     private Call<FixturesData> mCallFixturesData;
 
-    public static FixturesListFragment newInstance(Integer idCompetition) {
-        Log.i(TAG, "newInstance() inside method " + idCompetition);
+    private OnPostTaskHomeTeamListener onPostTaskHomeTeamListener;
+    private OnPostTaskAwayTeamListener onPostTaskAwayTeamListener;
+    private OnPostTaskCompetitionListener onPostTaskCompetitionListener;
+
+    private HomeTeamInfo homeTeamConnect;
+    private AwayTeamInfo awayTeamConnect;
+    private CompetitionInfo competitionConnect;
+
+    private Team hTeam;
+    private Team aTeam;
+    private String competitionName;
+
+    private Dialog progress;
+
+    public static FixturesListFragment newInstance(Integer id) {
+        Log.i(TAG, "newInstance() inside method " + id);
 
         FixturesListFragment fragment = new FixturesListFragment();
 
         Bundle args = new Bundle();
-        args.putInt("IDCOMPETITION", idCompetition);
+        args.putInt("ID", id);
         fragment.setArguments(args);
 
         return fragment;
@@ -49,19 +81,42 @@ public class FixturesListFragment extends Fragment {
         Log.i(TAG, "onCreate() inside method");
 
         Bundle args = getArguments();
-        int idCompetition = args.getInt("IDCOMPETITION");
+        int id = args.getInt("ID");
+
+        progress = new Dialog(getContext(), R.style.CustomProgressBar);
+        progress.setContentView(R.layout.component_progress_bar);
+        progress.setTitle("Loading...");
+        progress.show();
 
         Intent intent = getActivity().getIntent();
 
         int currentMatchDay = intent.getIntExtra(MATCHDAY, -1);
 
-        Log.i(TAG, "onCreate() inside method " + idCompetition);
+        String code = intent.getStringExtra(TEAMCODE);
+
+        onPostTaskHomeTeamListener = this;
+        onPostTaskAwayTeamListener = this;
+        onPostTaskCompetitionListener = this;
+
+        Log.i(TAG, "onCreate() inside method " + id);
+        Log.i(TAG, "onCreate() inside method - Code:" + code);
 
         if (savedInstanceState != null)
             return;
 
         if (savedInstanceState == null) {
-            getFixturesData(idCompetition, currentMatchDay);
+
+            if(code != null) {
+                Log.i(TAG, "inside if - Code: " + code);
+
+                getTeamFixturesData(id, code);
+
+            } else {
+                Log.i(TAG, "inside else - currentMatchDay: " + currentMatchDay);
+
+                getFixturesData(id, currentMatchDay);
+
+            }
 
         }
     }
@@ -87,12 +142,88 @@ public class FixturesListFragment extends Fragment {
         mCallFixturesData.enqueue(new Callback<FixturesData>() {
             @Override
             public void onResponse(Call<FixturesData> call, Response<FixturesData> response) {
+                Log.i(TAG, "onResponse() inside method");
 
                 FixturesData mFixturesData = response.body();
 
+                fillingTeamAndCompetitionNameInfo(mFixturesData);
+
                 if(mFixturesData != null) {
 
-                    showFixtures(mFixturesData);
+                    showFixtures(mFixturesData, null);
+
+                }
+
+                if (progress.isShowing()){
+                    progress.dismiss();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<FixturesData> call, Throwable t) {
+                Log.e(TAG, "onFailure() inside method");
+                t.printStackTrace();
+
+                if (progress.isShowing()){
+                    progress.dismiss();
+                }
+            }
+        });
+
+    }
+
+    private void showFixtures(FixturesData fixturesData, String code) {
+        Log.i(TAG, "showFixtures() inside method");
+
+        if(fixturesData != null){
+
+            fixturesListAdapter = new FixturesListAdapter(fixturesData, getContext(), code);
+            recyclerViewFixturesList.setAdapter(fixturesListAdapter);
+
+        }
+
+    }
+
+    private void fillingTeamAndCompetitionNameInfo(FixturesData fixturesData) {
+        Log.i(TAG, "fillingTeamAndCompetitionNameInfo() inside method");
+
+
+        for (int i = 0; i < fixturesData.getFixtures().size(); i++) {
+
+            Integer idCompetitionFromFixtures = getIdFromLink(fixturesData.getFixtures().get(i).getLinks().getCompetition().getHref());
+            Integer idHomeTeam = getIdFromLink(fixturesData.getFixtures().get(i).getLinks().getHomeTeam().getHref());
+            Integer idAwayTeam = getIdFromLink(fixturesData.getFixtures().get(i).getLinks().getAwayTeam().getHref());
+
+            competitionConnect = new CompetitionInfo(onPostTaskCompetitionListener, idCompetitionFromFixtures);
+            homeTeamConnect = new HomeTeamInfo(onPostTaskHomeTeamListener, idHomeTeam);
+            awayTeamConnect = new AwayTeamInfo(onPostTaskAwayTeamListener, idAwayTeam);
+
+            competitionConnect.execute();
+            homeTeamConnect.execute();
+            awayTeamConnect.execute();
+
+            fixturesData.getFixtures().get(i).setCompetitionName(competitionName);
+            fixturesData.getFixtures().get(i).setHomeTeam(hTeam);
+            fixturesData.getFixtures().get(i).setAwayTeam(aTeam);
+        }
+
+    }
+
+    public void getTeamFixturesData(Integer id, final String code) {
+        Log.i(TAG, "getFixturesData() inside method " + id);
+
+        mCallFixturesData = TeamService.Factory.create().fetchTeamFixturesById(id);
+
+        mCallFixturesData.enqueue(new Callback<FixturesData>() {
+            @Override
+            public void onResponse(Call<FixturesData> call, Response<FixturesData> response) {
+
+                FixturesData mTeamFixturesData = response.body();
+
+                if(mTeamFixturesData != null) {
+
+                    showFixtures(mTeamFixturesData, code);
 
                 }
 
@@ -104,19 +235,99 @@ public class FixturesListFragment extends Fragment {
                 t.printStackTrace();
             }
         });
-
     }
 
-    private void showFixtures(FixturesData fixturesData) {
-        Log.i(TAG, "showFixtures() inside method");
 
-        if(fixturesData != null){
+/**
+    private Team fetchHomeTeamInfo(Integer idHomeTeam) {
+        Log.i(TAG, "fetchHomeTeamInfo() inside method");
 
-            fixturesListAdapter = new FixturesListAdapter(fixturesData, getContext());
-            recyclerViewFixturesList.setAdapter(fixturesListAdapter);
+        final Team[] mTeam = {null};
+        mCallTeam = TeamService.Factory.create().getTeam(idHomeTeam);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+
+                    mTeam[0] = mCallTeam.execute().body();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                }
+
+            }
+        }).start();
+//
+//        Executors.newSingleThreadExecutor().submit(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                try {
+//
+//                    mTeam[0] = mCallTeam.execute().body();
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//
+//                }
+//
+//            }
+//        });
+
+        return mTeam[0];
+
+    }**/
+/**
+    private Team fetchAwayTeamInfo(Integer idAwayTeam) {
+        Log.i(TAG, "fetchAwayTeamInfo() inside method");
+
+        final Team[] mTeam = {null};
+        mCallTeam = TeamService.Factory.create().getTeam(idAwayTeam);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+
+                    mTeam[0] = mCallTeam.execute().body();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                }
+
+            }
+        }).start();
+
+        return mTeam[0];
+
+    } **/
+
+    // gets the id from the url
+    public int getIdFromLink(String url) {
+        Log.i(TAG, "getIdFromLink() inside method");
+
+        int idTeam = 0;
+        String[] link = url.split("\\/");
+
+        for (int i = 0; i < link.length; i++){
+            Log.i(TAG, "inside for: " + link[i]);
+
+            try {
+
+                idTeam = Integer.parseInt(link[i]);
+
+            } catch (NumberFormatException e) {
+                continue;
+            }
 
         }
 
+        return idTeam;
     }
 
     @Override
@@ -125,4 +336,27 @@ public class FixturesListFragment extends Fragment {
         getActivity().setTitle(TITLE);
     }
 
+    @Override
+    public void onTaskAwayTeamCompleted(Team team) {
+        Log.i(TAG, "onTaskAwayTeamCompleted() inside method - Name: " + team.getName());
+
+        aTeam = team;
+
+    }
+
+    @Override
+    public void onTaskCompetitionCompleted(String competitionName) {
+        Log.i(TAG, "onTaskCompetitionCompleted() inside method - Competition: " + competitionName);
+
+        this.competitionName = competitionName;
+
+    }
+
+    @Override
+    public void onTaskHomeTeamCompleted(Team team) {
+        Log.i(TAG, "onTaskHomeTeamCompleted() inside method - Name: " + team.getName());
+
+        hTeam = team;
+
+    }
 }

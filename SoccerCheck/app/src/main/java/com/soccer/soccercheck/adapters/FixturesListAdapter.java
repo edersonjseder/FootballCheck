@@ -2,6 +2,7 @@ package com.soccer.soccercheck.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,16 +24,19 @@ import java.util.Date;
  */
 
 public class FixturesListAdapter extends RecyclerView.Adapter<FixturesViewHolder> {
+    private static final String TAG = "FixturesListAdapter";
 
     private FixturesData fixturesData;
     private Context context;
     private DateTime time;
     private SimpleDateFormat simpleDateFormat;
+    private String teamCode;
 
-    public FixturesListAdapter(FixturesData fixturesData, Context context) {
+    public FixturesListAdapter(FixturesData fixturesData, Context context, String teamCode) {
         this.fixturesData = fixturesData;
         this.context = context;
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        this.teamCode = teamCode;
     }
 
     @Override
@@ -47,6 +51,7 @@ public class FixturesListAdapter extends RecyclerView.Adapter<FixturesViewHolder
 
     @Override
     public void onBindViewHolder(FixturesViewHolder fixturesViewHolder, int position) {
+        Log.i(TAG, "onBindViewHolder() inside method");
 
         // Gets the position of the item on the List and add the object information
         final Fixture fixture = fixturesData.getFixtures().get(position);
@@ -75,7 +80,7 @@ public class FixturesListAdapter extends RecyclerView.Adapter<FixturesViewHolder
         fixturesViewHolder.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ((OnFixtureItemSelectedListener)context).onFixtureItemSelected(fixture, position);
+                ((OnFixtureItemSelectedListener)context).onFixtureItemSelected(fixture, position, teamCode);
             }
         });
 
@@ -86,6 +91,7 @@ public class FixturesListAdapter extends RecyclerView.Adapter<FixturesViewHolder
         return (fixturesData != null) ? fixturesData.getFixtures().size() : 0;
     }
 
+    // Converting the score to String and show it on the view
     private String getScore(Object score) {
 
         if (score != null) {

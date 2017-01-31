@@ -14,15 +14,19 @@ import android.view.MenuItem;
 import android.view.Window;
 
 import com.soccer.soccercheck.R;
+import com.soccer.soccercheck.fragments.FixtureDetailFragment;
 import com.soccer.soccercheck.fragments.FixturesListFragment;
 import com.soccer.soccercheck.fragments.PlayerDetailFragment;
 import com.soccer.soccercheck.fragments.PlayerListFragment;
 import com.soccer.soccercheck.fragments.SoccerTabFragment;
 import com.soccer.soccercheck.fragments.TeamDetailFragment;
+import com.soccer.soccercheck.listeners.OnFixtureItemSelectedListener;
 import com.soccer.soccercheck.listeners.OnPlayerSelectedListener;
 import com.soccer.soccercheck.listeners.OnSendCurrentMatchDayListener;
+import com.soccer.soccercheck.listeners.OnShowFixtureListListener;
 import com.soccer.soccercheck.listeners.OnShowPlayerListListener;
 import com.soccer.soccercheck.listeners.OnTeamSelectedListener;
+import com.soccer.soccercheck.model.Fixture;
 import com.soccer.soccercheck.model.Players;
 import com.soccer.soccercheck.model.Standing;
 import com.soccer.soccercheck.model.Team;
@@ -31,7 +35,10 @@ import com.soccer.soccercheck.util.AlertDialogManager;
 import com.soccer.soccercheck.util.ConnectionDetector;
 
 public class SoccerMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnSendCurrentMatchDayListener, OnTeamSelectedListener, OnShowPlayerListListener, OnPlayerSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnSendCurrentMatchDayListener,
+        OnTeamSelectedListener, OnShowPlayerListListener, OnPlayerSelectedListener, OnShowFixtureListListener,
+        OnFixtureItemSelectedListener {
+
     private static final String TAG = "SoccerMainActivity";
 
     ConnectionDetector detector;
@@ -47,9 +54,12 @@ public class SoccerMainActivity extends AppCompatActivity
     private NavigationView navigationView;
 
     private TeamDetailFragment mTeamDetailFragment;
-    private PlayerDetailFragment mPlayerDetailFragment;
 
     private PlayerListFragment mPlayerListFragment;
+    private PlayerDetailFragment mPlayerDetailFragment;
+
+    private FixturesListFragment mFixturesListFragment;
+    private FixtureDetailFragment mFixtureDetailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +173,8 @@ public class SoccerMainActivity extends AppCompatActivity
         return true;
     }
 
+    /** Method called from CompetitionInfoFragment that receives the matchDay information
+     *  to be used to open FixtureListFragment on tab Fixtures **/
     @Override
     public void onMatchDaySelected(int matchDay) {
 
@@ -190,7 +202,7 @@ public class SoccerMainActivity extends AppCompatActivity
 
     @Override
     public void showPlayerList(Integer idTeam) {
-        Log.i(TAG, "showPlayerList() inside method " + idTeam);
+        Log.i(TAG, "showPlayerList() inside method ID: " + idTeam);
 
         mPlayerListFragment = PlayerListFragment.newInstance(idTeam);
 
@@ -223,5 +235,56 @@ public class SoccerMainActivity extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void showFixtureList(Integer idTeam, String teamCode) {
+        Log.i(TAG, "showFixtureList() inside method " + idTeam + ":" + teamCode);
+
+        mFixturesListFragment = FixturesListFragment.newInstance(idTeam);
+
+        getIntent().putExtra(FixturesListFragment.TEAMCODE, teamCode);
+
+        try {
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.id_content_fragments, mFixturesListFragment);
+            transaction.hide(mTeamDetailFragment);
+            transaction.addToBackStack(mTeamDetailFragment.getClass().getName());
+            transaction.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onFixtureItemSelected(Fixture fixture, int position, String teamCode) {
+        Log.i(TAG, "onFixtureItemSelected() inside method");
+
+        mFixtureDetailFragment = FixtureDetailFragment.newInstance(fixture);
+
+        try {
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.id_content_fragments, mFixtureDetailFragment);
+
+            if (teamCode != null){
+
+                transaction.hide(mFixturesListFragment);
+                transaction.addToBackStack(mFixturesListFragment.getClass().getName());
+
+            } else {
+
+                transaction.hide(mSoccerTabFragment);
+                transaction.addToBackStack(mSoccerTabFragment.getClass().getName());
+
+            }
+
+            transaction.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

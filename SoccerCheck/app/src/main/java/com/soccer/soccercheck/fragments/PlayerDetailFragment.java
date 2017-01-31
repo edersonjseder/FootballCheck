@@ -1,5 +1,6 @@
 package com.soccer.soccercheck.fragments;
 
+import android.content.Intent;
 import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,7 +27,12 @@ import com.soccer.soccercheck.util.SvgDecoder;
 import com.soccer.soccercheck.util.SvgDrawableTranscoder;
 import com.soccer.soccercheck.util.SvgSoftwareLayerSetter;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.io.InputStream;
+import java.util.Date;
 
 /**
  * Created by root on 16/01/17.
@@ -53,8 +59,7 @@ public class PlayerDetailFragment extends Fragment {
     private TextView textViewPlayerEndContractLabel;
     private TextView textViewPlayerMarketValueLabel;
 
-    private Players mPlayers;
-
+    private DateTimeFormatter formatter;
 
     public static PlayerDetailFragment newInstance(Players players) {
         Log.i(TAG, "newInstance() inside method");
@@ -68,29 +73,20 @@ public class PlayerDetailFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.i(TAG, "onCreate() inside method");
-
-        Bundle args = getArguments();
-        setmPlayers((Players) args.getSerializable(PLAYER));
-
-        Log.i(TAG, "Player value " + getmPlayers().getName());
-
-        if (savedInstanceState != null)
-            return;
-
-        getPlayerInfo();
-
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView() inside method");
 
         View view = inflater.inflate(R.layout.fragment_player_detail_soccer, container, false);
+
+        Bundle args = getArguments();
+
+        Players players = (Players) args.getSerializable(PLAYER);
+
+        Log.i(TAG, "Player value " + players.getName());
+
+        formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
         textViewPlayerName = (TextView) view.findViewById(R.id.textview_player_detail_name);
         textViewPlayerPosition = (TextView) view.findViewById(R.id.textview_player_detail_position);
@@ -108,6 +104,7 @@ public class PlayerDetailFragment extends Fragment {
         textViewPlayerEndContractLabel = (TextView) view.findViewById(R.id.textview_player_detail_contract_until_label);
         textViewPlayerMarketValueLabel = (TextView) view.findViewById(R.id.textview_player_detail_market_value_label);
 
+        getPlayerInfo(players);
 
 //        requestBuilder = Glide.with(getActivity())
 //                .using(Glide.buildStreamModelLoader(Uri.class, getActivity()), InputStream.class)
@@ -122,23 +119,28 @@ public class PlayerDetailFragment extends Fragment {
         return view;
     }
 
-    public void getPlayerInfo() {
+    public void getPlayerInfo(Players players) {
         Log.i(TAG, "getPlayerInfo() inside method");
 
-//        textViewPlayerName.setText(players.getName());
-//        textViewPlayerPosition.setText(players.getPosition());
-//
-//        if (players.getJerseyNumber() != null)
-//            textViewPlayerNumber.setText(players.getJerseyNumber().toString());
-//        else
-//            textViewPlayerNumber.setText("N/A");
-//
-//        textViewPlayerDateBirth.setText(players.getDateOfBirth());
-//        textViewPlayerNationality.setText(players.getNationality());
-//        textViewPlayerEndContract.setText(players.getContractUntil());
-//        textViewPlayerMarketValue.setText(players.getMarketValue());
+        textViewPlayerName.setText(players.getName());
+        textViewPlayerPosition.setText(players.getPosition());
 
-        Log.i(TAG, "Player value " + getmPlayers().getNationality());
+        if (players.getJerseyNumber() != null)
+            textViewPlayerNumber.setText(players.getJerseyNumber().toString());
+        else
+            textViewPlayerNumber.setText("N/A");
+
+        DateTime playerBirthDate = formatter.parseDateTime(players.getDateOfBirth());
+        DateTime playerEndContract = formatter.parseDateTime(players.getContractUntil());
+
+        DateTimeFormatter formatterOut = DateTimeFormat.forPattern("MM/dd/yyyy");
+
+        textViewPlayerDateBirth.setText(formatterOut.print(playerBirthDate));
+        textViewPlayerNationality.setText(players.getNationality());
+        textViewPlayerEndContract.setText(formatterOut.print(playerEndContract));
+        textViewPlayerMarketValue.setText(players.getMarketValue());
+
+        Log.i(TAG, "Player value " + players.getNationality());
 
         textViewPlayerNameLabel.setVisibility(View.VISIBLE);
         textViewPlayerPositionLabel.setVisibility(View.VISIBLE);
@@ -178,11 +180,4 @@ public class PlayerDetailFragment extends Fragment {
 //    }
 
 
-    public Players getmPlayers() {
-        return mPlayers;
-    }
-
-    public void setmPlayers(Players mPlayers) {
-        this.mPlayers = mPlayers;
-    }
 }
