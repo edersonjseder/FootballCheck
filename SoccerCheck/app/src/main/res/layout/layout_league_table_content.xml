@@ -5,115 +5,122 @@
     android:id="@+id/id_component_card_view_league_table_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    tools:showIn="@layout/component_card_view_league_table">
+    android:gravity="center_horizontal">
 
-    <LinearLayout
-        android:layout_marginBottom="@dimen/bottom_margin"
-        android:padding="@dimen/padding_all"
+
+    <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content" >
 
-        <TextView
-            android:text="1"
-            android:layout_width="@dimen/width_table_position"
-            android:layout_height="30dp"
-            android:id="@+id/textview_position"
-            android:textSize="@dimen/TextPosition"
-            android:textColor="@color/colorLabel"
-            android:gravity="center_horizontal|start"/>
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:id="@+id/imageView_team"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
-
-        <TextView
-            android:text="Team"
-            android:layout_width="@dimen/width_table_team_name"
-            android:layout_height="30dp"
-            android:id="@+id/textview_team_name"
-            android:textSize="@dimen/TextTeamName"
-            android:textColor="@color/colorLabel"
-            android:gravity="center_horizontal"/>
-
-        <TextView
-            android:text="Goals"
-            android:layout_width="@dimen/width_table_played_games"
-            android:layout_height="30dp"
-            android:id="@+id/textview_played_games"
-            android:textSize="@dimen/TextPlayedGames"
-            android:textColor="@color/colorLabel"
-            android:gravity="center_horizontal"/>
-
-        <!--TextView
-            android:text="2006"
+        <LinearLayout
+            android:padding="@dimen/padding_all"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textview_points"
-            android:textSize="@dimen/TextStatusSize"
-            android:textColor="@color/colorLabel"
-            android:gravity="center_horizontal"/>
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <TextView
-            android:text="2006"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textview_goals"
-            android:textSize="@dimen/TextStatusSize"
-            android:textColor="@color/colorLabel"
-            android:gravity="center_horizontal"/>
+            <TextView
+                android:text="1"
+                android:layout_width="@dimen/width_table_position"
+                android:layout_height="30dp"
+                android:id="@+id/textview_position"
+                android:textSize="@dimen/TextPosition"
+                android:textColor="@color/colorLabel"
+                android:gravity="center_horizontal|start"/>
 
-        <TextView
-            android:text="2006"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textview_goals_against"
-            android:textSize="@dimen/TextStatusSize"
-            android:textColor="@color/colorLabel"
-            android:gravity="center_horizontal"/>
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent" />
 
-        <TextView
-            android:text="2006"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textview_goal_difference"
-            android:textSize="@dimen/TextStatusSize"
-            android:textColor="@color/colorLabel"
-            android:gravity="center_horizontal"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/imageView_team"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
 
-        <TextView
-            android:text="2006"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textview_wins"
-            android:textSize="@dimen/TextStatusSize"
-            android:textColor="@color/colorLabel"
-            android:gravity="center_horizontal"/>
+            <TextView
+                android:text="Team"
+                android:layout_width="@dimen/width_table_team_name"
+                android:layout_height="30dp"
+                android:id="@+id/textview_team_name"
+                android:textSize="@dimen/TextTeamName"
+                android:textColor="@color/colorLabel"
+                android:gravity="center_horizontal"/>
 
-        <TextView
-            android:text="2006"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textview_draws"
-            android:textSize="@dimen/TextStatusSize"
-            android:textColor="@color/colorLabel"
-            android:gravity="center_horizontal"/>
+            <TextView
+                android:text="Goals"
+                android:layout_width="@dimen/width_table_played_games"
+                android:layout_height="30dp"
+                android:id="@+id/textview_played_games"
+                android:textSize="@dimen/TextPlayedGames"
+                android:textColor="@color/colorLabel"
+                android:gravity="center_horizontal"/>
 
-        <TextView
-            android:text="2006"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textview_losses"
-            android:textSize="@dimen/TextStatusSize"
-            android:textColor="@color/colorLabel"
-            android:gravity="center_horizontal"/-->
+            <!--TextView
+                android:text="2006"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_points"
+                android:textSize="@dimen/TextStatusSize"
+                android:textColor="@color/colorLabel"
+                android:gravity="center_horizontal"/>
 
-    </LinearLayout>
+            <TextView
+                android:text="2006"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_goals"
+                android:textSize="@dimen/TextStatusSize"
+                android:textColor="@color/colorLabel"
+                android:gravity="center_horizontal"/>
 
+            <TextView
+                android:text="2006"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_goals_against"
+                android:textSize="@dimen/TextStatusSize"
+                android:textColor="@color/colorLabel"
+                android:gravity="center_horizontal"/>
 
+            <TextView
+                android:text="2006"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_goal_difference"
+                android:textSize="@dimen/TextStatusSize"
+                android:textColor="@color/colorLabel"
+                android:gravity="center_horizontal"/>
+
+            <TextView
+                android:text="2006"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_wins"
+                android:textSize="@dimen/TextStatusSize"
+                android:textColor="@color/colorLabel"
+                android:gravity="center_horizontal"/>
+
+            <TextView
+                android:text="2006"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_draws"
+                android:textSize="@dimen/TextStatusSize"
+                android:textColor="@color/colorLabel"
+                android:gravity="center_horizontal"/>
+
+            <TextView
+                android:text="2006"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_losses"
+                android:textSize="@dimen/TextStatusSize"
+                android:textColor="@color/colorLabel"
+                android:gravity="center_horizontal"/-->
+
+        </LinearLayout>
+
+    </TableRow>
 
 </LinearLayout>

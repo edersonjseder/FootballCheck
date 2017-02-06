@@ -34,8 +34,6 @@ public class PlayerListFragment extends Fragment {
 
     private Call<PlayerList> mCallPlayerList;
 
-    private Dialog progress;
-
     public static PlayerListFragment newInstance(Integer idTeam) {
         Log.i(TAG, "newInstance() inside method " + idTeam);
 
@@ -56,10 +54,6 @@ public class PlayerListFragment extends Fragment {
         Bundle args = getArguments();
         int idTeam = args.getInt(IDTEAM);
 
-        progress = new Dialog(getContext(), R.style.CustomProgressBar);
-        progress.setContentView(R.layout.component_progress_bar);
-        progress.setTitle("Loading...");
-
         Log.i(TAG, "IDTEAM " + idTeam);
 
         if (savedInstanceState != null)
@@ -74,8 +68,6 @@ public class PlayerListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        progress.show();
 
         View view = inflater.inflate(R.layout.fragment_player_list_soccer, container, false);
 
@@ -103,19 +95,12 @@ public class PlayerListFragment extends Fragment {
 
                 }
 
-                if (progress.isShowing()){
-                    progress.dismiss();
-                }
             }
 
             @Override
             public void onFailure(Call<PlayerList> call, Throwable t) {
                 Log.e(TAG, "onFailure() inside method");
                 t.printStackTrace();
-
-                if (progress.isShowing()){
-                    progress.dismiss();
-                }
             }
         });
     }

@@ -2,6 +2,8 @@ package com.soccer.soccercheck.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,37 +12,49 @@ import java.util.List;
 /**
  * Created by root on 19/11/16.
  */
+@DatabaseTable(tableName = "competition")
 public class Competition implements Serializable{
 
     @JsonProperty("_links")
     private Links links;
 
     @JsonProperty("id")
+    @DatabaseField(id = true)
     private Integer id;
 
     @JsonProperty("caption")
+    @DatabaseField
     private String caption;
 
     @JsonProperty("league")
+    @DatabaseField
     private String league;
 
     @JsonProperty("year")
+    @DatabaseField
     private String year;
 
     @JsonProperty("currentMatchday")
+    @DatabaseField(columnName = "current_matchday")
     private Integer currentMatchday;
 
     @JsonProperty("numberOfMatchdays")
+    @DatabaseField(columnName = "number_matchdays")
     private Integer numberOfMatchdays;
 
     @JsonProperty("numberOfTeams")
-    private Integer numberOfTeams;
+    @DatabaseField(columnName = "number_teams")
+    private int numberOfTeams;
 
     @JsonProperty("numberOfGames")
-    private Integer numberOfGames;
+    @DatabaseField(columnName = "number_games")
+    private int numberOfGames;
 
     @JsonProperty("lastUpdated")
+    @DatabaseField(columnName = "last_updated")
     private String lastUpdated;
+
+    public Competition(){}
 
     public Links getLinks() {
         return links;

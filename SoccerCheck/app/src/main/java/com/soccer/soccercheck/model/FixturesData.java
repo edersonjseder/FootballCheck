@@ -5,25 +5,36 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * Created by root on 19/11/16.
  */
+@DatabaseTable(tableName = "fixtures_data")
 public class FixturesData {
 
     @JsonProperty("_links")
     private Links links;
 
     @JsonIgnore
+    @DatabaseField(id = true, generatedId = true)
+    private Integer id;
+
+    @JsonIgnore
+    @DatabaseField(columnName = "time_frame_start")
     private String timeFrameStart;
 
     @JsonIgnore
+    @DatabaseField(columnName = "time_frame_end")
     private String timeFrameEnd;
 
     @JsonProperty("count")
+    @DatabaseField
     private Integer count;
 
     @JsonProperty("fixtures")
+    @DatabaseField
     private List<Fixture> fixtures = new ArrayList<Fixture>();
 
     public Links getLinks() {
@@ -32,6 +43,16 @@ public class FixturesData {
 
     public void setLinks(Links links) {
         this.links = links;
+    }
+
+    public FixturesData(){}
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getTimeFrameStart() {

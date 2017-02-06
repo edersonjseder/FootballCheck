@@ -20,13 +20,11 @@ public class SoccerPagerAdapter extends FragmentStatePagerAdapter {
 
     private int numberOfTabs;
     private int idCompetition;
-    private Dialog progress;
 
-    public SoccerPagerAdapter(FragmentManager fm, int numberOfTabs, int idCompetition, Dialog progress) {
+    public SoccerPagerAdapter(FragmentManager fm, int numberOfTabs, int idCompetition) {
         super(fm);
         this.numberOfTabs = numberOfTabs;
         this.idCompetition = idCompetition;
-        this.progress = progress;
     }
 
     @Override

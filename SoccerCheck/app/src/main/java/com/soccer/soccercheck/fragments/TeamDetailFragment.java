@@ -66,8 +66,6 @@ public class TeamDetailFragment extends Fragment {
 
     private Call<Team> mCallTeam;
 
-    private Dialog progress;
-
     private Team mTeam;
 
     private GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> requestBuilder;
@@ -92,10 +90,6 @@ public class TeamDetailFragment extends Fragment {
         Bundle args = getArguments();
         Standing mStanding = (Standing) args.getSerializable(STANDING);
 
-        progress = new Dialog(getContext(), R.style.CustomProgressBar);
-        progress.setContentView(R.layout.component_progress_bar);
-        progress.setTitle("Loading...");
-
         Log.i(TAG, "Standing Value Link: " + mStanding.getLinks().getTeam().getHref());
 
         int idTeam = getIdFromLink(mStanding.getLinks().getTeam().getHref());
@@ -114,8 +108,6 @@ public class TeamDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView() inside method");
-
-        progress.show();
 
         View view = inflater.inflate(R.layout.fragment_team_detail_soccer, container, false);
 
@@ -168,20 +160,12 @@ public class TeamDetailFragment extends Fragment {
 
                 }
 
-                if (progress.isShowing()){
-                    progress.dismiss();
-                }
-
             }
 
             @Override
             public void onFailure(Call<Team> call, Throwable t) {
                 Log.i(TAG, "onFailure() inside method");
                 t.printStackTrace();
-
-                if (progress.isShowing()){
-                    progress.dismiss();
-                }
             }
         });
 

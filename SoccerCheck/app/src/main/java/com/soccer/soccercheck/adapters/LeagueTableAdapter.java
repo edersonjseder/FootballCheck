@@ -20,7 +20,6 @@ import com.soccer.soccercheck.model.LeagueTable;
 import com.soccer.soccercheck.model.Standing;
 import com.soccer.soccercheck.util.ExtensionLinkGetter;
 import com.soccer.soccercheck.viewHolders.LeagueTableViewHolder;
-import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
 import java.util.List;
@@ -45,7 +44,7 @@ public class LeagueTableAdapter extends RecyclerView.Adapter<LeagueTableViewHold
     @Override
     public LeagueTableViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.component_card_view_league_table, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_league_table_content, viewGroup, false);
         LeagueTableViewHolder mLeagueTableViewHolder = new LeagueTableViewHolder(view);
         view.setTag(mLeagueTableViewHolder);
 

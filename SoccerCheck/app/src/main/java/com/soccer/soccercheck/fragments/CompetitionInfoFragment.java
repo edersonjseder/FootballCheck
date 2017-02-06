@@ -13,17 +13,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.soccer.soccercheck.R;
+import com.soccer.soccercheck.listeners.OnPostTaskCompetitionListener;
+import com.soccer.soccercheck.listeners.OnPostTaskFixturesListener;
+import com.soccer.soccercheck.listeners.OnPostTaskLeagueTableListener;
 import com.soccer.soccercheck.listeners.OnSendCurrentMatchDayListener;
 import com.soccer.soccercheck.main.SoccerMainActivity;
 import com.soccer.soccercheck.model.Competition;
+import com.soccer.soccercheck.model.FixturesData;
+import com.soccer.soccercheck.model.LeagueTable;
 import com.soccer.soccercheck.path.FBPath;
 import com.soccer.soccercheck.services.CompetitionsService;
+import com.soccer.soccercheck.services.LeagueTableService;
+import com.soccer.soccercheck.util.CompetitionInfo;
+import com.soccer.soccercheck.util.FixturesInfo;
+import com.soccer.soccercheck.util.LeagueTableInfo;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class CompetitionInfoFragment extends Fragment {
+public class CompetitionInfoFragment extends Fragment implements OnPostTaskLeagueTableListener, OnPostTaskFixturesListener {
     private static final String TAG = "CompetitionInfoFragment";
     private static final String TITLE = "Competition";
 
@@ -37,8 +49,18 @@ public class CompetitionInfoFragment extends Fragment {
     private TextView numberMatchDays;
     private TextView numberGames;
 
-    private Call<Competition> mCallCompetition;
+    private OnPostTaskLeagueTableListener onPostTaskLeagueTableListener;
+    private OnPostTaskFixturesListener onPostTaskFixturesListener;
+
+//    private Call<Competition> mCallCompetition;
+    private Observable<Competition> mCallCompetition;
+    private Call<LeagueTable> mCallLeagueTable;
     private Competition mCompetition;
+    private LeagueTableInfo leagueTableConnect;
+    private FixturesInfo fixturesConnect;
+    private LeagueTable leagueTable;
+    private FixturesData fixturesData;
+
 
     private Dialog progress;
 
@@ -79,11 +101,6 @@ public class CompetitionInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        progress = new Dialog(getContext(), R.style.CustomProgressBar);
-        progress.setContentView(R.layout.component_progress_bar);
-        progress.setTitle("Loading...");
-        progress.show();
-
         View v = inflater.inflate(R.layout.fragment_competitions_soccer, container, false);
 
         imageCompetitionLogo = (ImageView) v.findViewById(R.id.id_image_logo);
@@ -100,34 +117,69 @@ public class CompetitionInfoFragment extends Fragment {
 
     }
 
-    public void getCompetitionInfo(Integer id) {
+    public void getCompetitionInfo(final Integer id) {
+        Log.i(TAG, "getCompetitionInfo() inside method");
 
-        mCallCompetition = CompetitionsService.Factory.create().fetchCompetition(id);
+        onPostTaskLeagueTableListener = this;
+        onPostTaskFixturesListener = this;
 
-        mCallCompetition.enqueue(new Callback<Competition>() {
-            @Override
-            public void onResponse(Call<Competition> call, Response<Competition> response) {
+        mCallCompetition = CompetitionsService.Factory.create().fetchRxCompetition(id);
 
-                mCompetition = response.body();
+        progress = new Dialog(getContext(), R.style.CustomProgressBar);
+        progress.setContentView(R.layout.component_progress_bar);
+        progress.setTitle("Loading...");
+        progress.show();
 
-                if(mCompetition != null) {
+        mCallCompetition.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(competition -> {
 
-                    showCompetitionsInfo(mCompetition);
+                    mCompetition = competition;
 
-                }
+                    return mCompetition;
 
-            }
+                }).map(mCompetition -> {
 
-            @Override
-            public void onFailure(Call<Competition> call, Throwable t) {
-                Log.i(TAG, "onFailure() inside method");
-                t.printStackTrace();
+                    leagueTableConnect = new LeagueTableInfo(onPostTaskLeagueTableListener, id);
+                    leagueTableConnect.execute();
 
-                if (progress.isShowing()){
-                    progress.dismiss();
-                }
-            }
-        });
+                    return mCompetition;
+
+                }).map(mCompetition -> {
+
+                    fixturesConnect = new FixturesInfo(onPostTaskFixturesListener, id);
+                    fixturesConnect.execute();
+
+                    return mCompetition;
+
+        }).subscribe(competitions -> showCompetitionsInfo(competitions));
+
+
+
+//        mCallCompetition.enqueue(new Callback<Competition>() {
+//            @Override
+//            public void onResponse(Call<Competition> call, Response<Competition> response) {
+//
+//                mCompetition = response.body();
+//
+//                if(mCompetition != null) {
+//
+//                    showCompetitionsInfo(mCompetition);
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Competition> call, Throwable t) {
+//                Log.i(TAG, "onFailure() inside method");
+//                t.printStackTrace();
+//
+//                if (progress.isShowing()){
+//                    progress.dismiss();
+//                }
+//            }
+//        });
 
     }
 
@@ -173,10 +225,6 @@ public class CompetitionInfoFragment extends Fragment {
 
             }
 
-            if (progress.isShowing()){
-                progress.dismiss();
-            }
-
             // code that passes the matchDay parameter to the activity
             onCallBack.onMatchDaySelected(competition.getCurrentMatchday());
 
@@ -204,4 +252,25 @@ public class CompetitionInfoFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onTaskLeagueTableCompleted(LeagueTable leagueTable) {
+        Log.i(TAG, "onTaskLeagueTableCompleted() inside method - PARAMETER: " + leagueTable.getLeagueCaption() + " & LOCAL: " + this.leagueTable);
+        this.leagueTable = leagueTable;
+
+        Log.i(TAG, "onTaskLeagueTableCompleted() inside method - LOCAL: " + this.leagueTable);
+    }
+
+    @Override
+    public void onTaskFixturesCompleted(FixturesData fixturesData) {
+        Log.i(TAG, "onTaskFixturesCompleted() inside method - PARAMETER: " + fixturesData.getCount() + " & LOCAL: " + this.fixturesData);
+        this.fixturesData = fixturesData;
+
+        Log.i(TAG, "onTaskFixturesCompleted() inside method - LOCAL: " + this.fixturesData);
+
+        if (progress.isShowing()){
+            Log.i(TAG, "INSIDE IF - PROGRESSBAR");
+            progress.dismiss();
+        }
+
+    }
 }

@@ -71,8 +71,6 @@ public class FixtureDetailFragment extends Fragment {
     private SimpleDateFormat simpleDateFormat;
     private DateTime fixtureDate;
 
-    private Dialog progress;
-
     private GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> requestBuilder;
 
     public static FixtureDetailFragment newInstance(Fixture fixture) {
@@ -94,18 +92,12 @@ public class FixtureDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate() inside method");
 
-        progress = new Dialog(getContext(), R.style.CustomProgressBar);
-        progress.setContentView(R.layout.component_progress_bar);
-        progress.setTitle("Loading...");
-
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView() inside method");
-
-        progress.show();
 
         View view = inflater.inflate(R.layout.fragment_fixture_detail_soccer, container, false);
 

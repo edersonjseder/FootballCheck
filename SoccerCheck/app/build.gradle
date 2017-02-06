@@ -10,6 +10,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        jackOptions {
+            enabled true
+        }
     }
     buildTypes {
         release {
@@ -30,6 +34,10 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/notice.txt'
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
     }
 }
 
@@ -60,8 +68,9 @@ dependencies {
     compile 'com.android.support:support-v4:24.2.1'
     compile 'io.reactivex:rxjava:1.0.10'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.squareup.picasso:picasso:2.6.0-SNAPSHOT'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.j256.ormlite:ormlite-core:4.48'
+    compile 'com.j256.ormlite:ormlite-android:4.48'
     compile 'com.caverock:androidsvg:1.2.1'
 
     compile 'com.android.support:appcompat-v7:24.2.0'

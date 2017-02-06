@@ -27,8 +27,8 @@ import rx.Observable;
 
 public interface CompetitionsService {
 
-    @GET(FBPath.COMPETITIONS)
-    Observable<List<Competition>> fetchCompetitions();
+    @GET(FBPath.COMPETITIONS + "/{id}")
+    Observable<Competition> fetchRxCompetition(@Path("id") int id);
 
 
     @GET(FBPath.COMPETITIONS + "/{id}")

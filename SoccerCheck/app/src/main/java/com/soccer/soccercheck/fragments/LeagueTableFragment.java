@@ -54,8 +54,6 @@ public class LeagueTableFragment extends Fragment {
 
     private int idCompetition;
 
-    private Dialog progress;
-
     private GenericRequestBuilder<Uri, InputStream, SVG, PictureDrawable> requestBuilder;
 
     public static LeagueTableFragment newInstance(Integer idCompetition) {
@@ -77,10 +75,6 @@ public class LeagueTableFragment extends Fragment {
 
         Bundle args = getArguments();
         idCompetition = args.getInt("IDCOMPETITION");
-
-        progress = new Dialog(getContext(), R.style.CustomProgressBar);
-        progress.setContentView(R.layout.component_progress_bar);
-        progress.setTitle("Loading...");
 
         Log.i(TAG, "onCreate() inside method " + idCompetition);
 
@@ -105,8 +99,6 @@ public class LeagueTableFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view;
-
-        progress.show();
 
         if(idCompetition == Integer.parseInt(FBPath.CL)) {
 
@@ -171,10 +163,6 @@ public class LeagueTableFragment extends Fragment {
 
                 }
 
-                if (progress.isShowing()){
-                    progress.dismiss();
-                }
-
             }
 
             @Override
@@ -182,9 +170,6 @@ public class LeagueTableFragment extends Fragment {
                 Log.i(TAG, "onFailure() inside method");
                 t.printStackTrace();
 
-                if (progress.isShowing()){
-                    progress.dismiss();
-                }
             }
         });
 

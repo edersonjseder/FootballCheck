@@ -20,4 +20,5 @@
     <color name="dark">#090909</color>
 
     <color name="text_color">#e6f3ff</color>
+    <color name="competition_info_text_color">#e6f3ff</color>
 </resources>

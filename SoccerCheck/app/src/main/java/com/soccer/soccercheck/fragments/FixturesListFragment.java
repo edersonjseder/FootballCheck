@@ -61,8 +61,6 @@ public class FixturesListFragment extends Fragment implements OnPostTaskHomeTeam
     private Team aTeam;
     private String competitionName;
 
-    private Dialog progress;
-
     public static FixturesListFragment newInstance(Integer id) {
         Log.i(TAG, "newInstance() inside method " + id);
 
@@ -82,11 +80,6 @@ public class FixturesListFragment extends Fragment implements OnPostTaskHomeTeam
 
         Bundle args = getArguments();
         int id = args.getInt("ID");
-
-        progress = new Dialog(getContext(), R.style.CustomProgressBar);
-        progress.setContentView(R.layout.component_progress_bar);
-        progress.setTitle("Loading...");
-        progress.show();
 
         Intent intent = getActivity().getIntent();
 
@@ -154,20 +147,12 @@ public class FixturesListFragment extends Fragment implements OnPostTaskHomeTeam
 
                 }
 
-                if (progress.isShowing()){
-                    progress.dismiss();
-                }
-
             }
 
             @Override
             public void onFailure(Call<FixturesData> call, Throwable t) {
                 Log.e(TAG, "onFailure() inside method");
                 t.printStackTrace();
-
-                if (progress.isShowing()){
-                    progress.dismiss();
-                }
             }
         });
 

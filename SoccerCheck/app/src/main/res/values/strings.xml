@@ -25,6 +25,12 @@
     <string name="title_tab_league_table">Table</string>
     <string name="title_tab_fixtures_list">Fixtures</string>
 
+
+    <!-- Competition Info Label -->
+    <string name="competition_info_number_games_label">Number of Games: </string>
+    <string name="competition_info_number_teams_label">Number of Teams: </string>
+    <string name="competition_info_number_matchdays_label">Number Match Days: </string>
+
     <!-- League Table Label -->
     <string name="position">Position</string>
     <string name="teamName">Team</string>

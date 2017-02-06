@@ -40,7 +40,7 @@ public class CompetitionsListAdapter extends RecyclerView.Adapter<CompetitionsVi
     @Override
     public CompetitionsViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.component_card_view_league_table, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_league_table_soccer, viewGroup, false);
         CompetitionsViewHolder mCompetitionsViewHolder = new CompetitionsViewHolder(view);
         view.setTag(mCompetitionsViewHolder);
 
