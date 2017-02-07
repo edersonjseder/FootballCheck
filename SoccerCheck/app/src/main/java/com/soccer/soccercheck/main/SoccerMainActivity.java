@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.Window;
 
 import com.soccer.soccercheck.R;
+import com.soccer.soccercheck.factory.DatabaseManager;
 import com.soccer.soccercheck.fragments.FixtureDetailFragment;
 import com.soccer.soccercheck.fragments.FixturesListFragment;
 import com.soccer.soccercheck.fragments.PlayerDetailFragment;
@@ -64,6 +65,7 @@ public class SoccerMainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DatabaseManager.init(this);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main_soccer);
 

@@ -3,6 +3,7 @@ package com.soccer.soccercheck.initializer;
 import android.app.Application;
 import android.content.Context;
 
+import com.soccer.soccercheck.helper.DataBaseHelper;
 import com.soccer.soccercheck.services.FixturesDataService;
 import com.soccer.soccercheck.services.TeamService;
 
@@ -18,6 +19,8 @@ public class AppInitializer extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        new DataBaseHelper(getApplicationContext()).getWritableDatabase();
        // JodaTimeAndroid.init(this);
     }
 
@@ -25,17 +28,17 @@ public class AppInitializer extends Application {
         return (AppInitializer) context.getApplicationContext();
     }
 
-    public FixturesDataService getFixturesDataService() {
-        if (fixturesDataService == null) {
-            fixturesDataService = FixturesDataService.Factory.create();
-        }
-        return fixturesDataService;
-    }
-
-    public TeamService getTeamService() {
-        if (teamService == null) {
-            teamService = TeamService.Factory.create();
-        }
-        return teamService;
-    }
+//    public FixturesDataService getFixturesDataService() {
+//        if (fixturesDataService == null) {
+//            fixturesDataService = FixturesDataService.Factory.create();
+//        }
+//        return fixturesDataService;
+//    }
+//
+//    public TeamService getTeamService() {
+//        if (teamService == null) {
+//            teamService = TeamService.Factory.create();
+//        }
+//        return teamService;
+//    }
 }

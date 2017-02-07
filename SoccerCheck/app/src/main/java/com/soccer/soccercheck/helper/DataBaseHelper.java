@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.soccer.soccercheck.model.Competition;
@@ -20,8 +21,16 @@ import java.sql.SQLException;
 public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String TAG = "DataBaseHelper";
 
-    private static final String DATABASE_NAME = "db_mobtur.db";
+    // name of the database file for the application
+    private static final String DATABASE_NAME = "db_soccercheck.db";
+
+    // any time you make changes to your database objects, you may have to increase the database version
     private static final int DATABASE_VERSION = 1;
+
+    // the DAO object we use to access the SimpleData table
+    private Dao<Competition, Integer> competitionDao = null;
+    private Dao<LeagueTable, Integer> leagueTableDao = null;
+    private Dao<FixturesData, Integer> fixturesDataDao = null;
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,9 +43,9 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             Log.i(DataBaseHelper.class.getName(), "onCreate");
 
-            TableUtils.createTable(connectionSource, Competition.class);
-            TableUtils.createTable(connectionSource, LeagueTable.class);
-            TableUtils.createTable(connectionSource, FixturesData.class);
+            TableUtils.createTableIfNotExists(connectionSource, Competition.class);
+            TableUtils.createTableIfNotExists(connectionSource, LeagueTable.class);
+            TableUtils.createTableIfNotExists(connectionSource, FixturesData.class);
 
         } catch (SQLException e) {
             Log.e(DataBaseHelper.class.getName(), "Can't create database", e);
@@ -65,6 +74,39 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
 
         }
 
+    }
+
+    public Dao<Competition, Integer> getCompetitionDao() {
+        if(competitionDao == null) {
+            try {
+                competitionDao = getDao(Competition.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return competitionDao;
+    }
+
+    public Dao<LeagueTable, Integer> getLeagueTableDao() {
+        if(leagueTableDao == null) {
+            try {
+                leagueTableDao = getDao(LeagueTable.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return leagueTableDao;
+    }
+
+    public Dao<FixturesData, Integer> getFixturesDataDao() {
+        if(fixturesDataDao == null) {
+            try {
+                fixturesDataDao = getDao(FixturesData.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return fixturesDataDao;
     }
 
     @Override

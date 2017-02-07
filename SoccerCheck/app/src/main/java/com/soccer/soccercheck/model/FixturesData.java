@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 /**
@@ -34,7 +35,7 @@ public class FixturesData {
     private Integer count;
 
     @JsonProperty("fixtures")
-    @DatabaseField
+    @ForeignCollectionField
     private List<Fixture> fixtures = new ArrayList<Fixture>();
 
     public Links getLinks() {

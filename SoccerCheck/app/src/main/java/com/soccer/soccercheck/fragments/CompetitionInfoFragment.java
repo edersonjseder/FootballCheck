@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.soccer.soccercheck.R;
+import com.soccer.soccercheck.factory.DaoFactory;
+import com.soccer.soccercheck.factory.DatabaseManager;
+import com.soccer.soccercheck.helper.DataBaseHelper;
 import com.soccer.soccercheck.listeners.OnPostTaskCompetitionListener;
 import com.soccer.soccercheck.listeners.OnPostTaskFixturesListener;
 import com.soccer.soccercheck.listeners.OnPostTaskLeagueTableListener;
@@ -61,6 +64,7 @@ public class CompetitionInfoFragment extends Fragment implements OnPostTaskLeagu
     private LeagueTable leagueTable;
     private FixturesData fixturesData;
 
+    private DaoFactory daoFactory;
 
     private Dialog progress;
 
@@ -83,16 +87,25 @@ public class CompetitionInfoFragment extends Fragment implements OnPostTaskLeagu
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate() inside method");
 
+        daoFactory = (DaoFactory) getActivity().getApplication();
+
+        boolean isDbEmpty = true;
+
         Bundle args = getArguments();
         int idCompetition = args.getInt("IDCOMPETITION");
 
         Log.i(TAG, "onCreate() ID " + idCompetition);
 
+        if (DatabaseManager.getInstance().getCompetition(idCompetition) != null) {
+            Log.i(TAG, "onCreate() inside IF");
+            isDbEmpty = false;
+        }
+
         if (savedInstanceState != null)
             return;
 
         if (savedInstanceState == null) {
-            getCompetitionInfo(idCompetition);
+            getCompetitionInfo(idCompetition, isDbEmpty);
 
         }
     }
@@ -117,42 +130,53 @@ public class CompetitionInfoFragment extends Fragment implements OnPostTaskLeagu
 
     }
 
-    public void getCompetitionInfo(final Integer id) {
+    public void getCompetitionInfo(final Integer id, boolean isDbEmpty) {
         Log.i(TAG, "getCompetitionInfo() inside method");
 
-        onPostTaskLeagueTableListener = this;
-        onPostTaskFixturesListener = this;
+        if (isDbEmpty) {
+            Log.i(TAG, "INSIDE IF");
 
-        mCallCompetition = CompetitionsService.Factory.create().fetchRxCompetition(id);
+            onPostTaskLeagueTableListener = this;
+            onPostTaskFixturesListener = this;
 
-        progress = new Dialog(getContext(), R.style.CustomProgressBar);
-        progress.setContentView(R.layout.component_progress_bar);
-        progress.setTitle("Loading...");
-        progress.show();
+            mCallCompetition = CompetitionsService.Factory.create().fetchRxCompetition(id);
 
-        mCallCompetition.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(competition -> {
+            progress = new Dialog(getContext(), R.style.CustomProgressBar);
+            progress.setContentView(R.layout.component_progress_bar);
+            progress.setTitle("Loading...");
+            progress.show();
 
-                    mCompetition = competition;
+            mCallCompetition.subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .map(competition -> {
 
-                    return mCompetition;
+                        mCompetition = competition;
 
-                }).map(mCompetition -> {
+                        return mCompetition;
 
-                    leagueTableConnect = new LeagueTableInfo(onPostTaskLeagueTableListener, id);
-                    leagueTableConnect.execute();
+                    }).map(mCompetition -> {
 
-                    return mCompetition;
+                leagueTableConnect = new LeagueTableInfo(onPostTaskLeagueTableListener, id);
+                leagueTableConnect.execute();
 
-                }).map(mCompetition -> {
+                return mCompetition;
 
-                    fixturesConnect = new FixturesInfo(onPostTaskFixturesListener, id);
-                    fixturesConnect.execute();
+            }).map(mCompetition -> {
 
-                    return mCompetition;
+                fixturesConnect = new FixturesInfo(onPostTaskFixturesListener, id);
+                fixturesConnect.execute();
 
-        }).subscribe(competitions -> showCompetitionsInfo(competitions));
+                return mCompetition;
+
+            }).map(mCompetition -> {
+
+                DatabaseManager.getInstance().saveLeagueTable(leagueTable);
+                DatabaseManager.getInstance().saveFixturesData(fixturesData);
+                DatabaseManager.getInstance().saveCompetition(mCompetition);
+
+                return mCompetition;
+
+            }).subscribe(competitions -> showCompetitionsInfo(competitions));
 
 
 
@@ -180,6 +204,16 @@ public class CompetitionInfoFragment extends Fragment implements OnPostTaskLeagu
 //                }
 //            }
 //        });
+
+        } else {
+            Log.i(TAG, "INSIDE ELSE");
+
+            Competition competition = DatabaseManager.getInstance().getCompetition(id);
+
+            showCompetitionsInfo(competition);
+
+        }
+
 
     }
 
@@ -258,6 +292,9 @@ public class CompetitionInfoFragment extends Fragment implements OnPostTaskLeagu
         this.leagueTable = leagueTable;
 
         Log.i(TAG, "onTaskLeagueTableCompleted() inside method - LOCAL: " + this.leagueTable);
+
+        this.mCompetition.setLeagueTable(this.leagueTable);
+
     }
 
     @Override
@@ -266,6 +303,8 @@ public class CompetitionInfoFragment extends Fragment implements OnPostTaskLeagu
         this.fixturesData = fixturesData;
 
         Log.i(TAG, "onTaskFixturesCompleted() inside method - LOCAL: " + this.fixturesData);
+
+        this.mCompetition.setFixturesData(this.fixturesData);
 
         if (progress.isShowing()){
             Log.i(TAG, "INSIDE IF - PROGRESSBAR");

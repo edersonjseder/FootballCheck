@@ -19,8 +19,16 @@ public class Competition implements Serializable{
     private Links links;
 
     @JsonProperty("id")
-    @DatabaseField(id = true)
+    @DatabaseField(id = true, canBeNull = false)
     private Integer id;
+
+    @JsonIgnore
+    @DatabaseField(columnName = "id", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
+    private LeagueTable leagueTable;
+
+    @JsonIgnore
+    @DatabaseField(columnName = "id", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
+    private FixturesData fixturesData;
 
     @JsonProperty("caption")
     @DatabaseField
@@ -70,6 +78,22 @@ public class Competition implements Serializable{
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public LeagueTable getLeagueTable() {
+        return leagueTable;
+    }
+
+    public void setLeagueTable(LeagueTable leagueTable) {
+        this.leagueTable = leagueTable;
+    }
+
+    public FixturesData getFixturesData() {
+        return fixturesData;
+    }
+
+    public void setFixturesData(FixturesData fixturesData) {
+        this.fixturesData = fixturesData;
     }
 
     public String getCaption() {
