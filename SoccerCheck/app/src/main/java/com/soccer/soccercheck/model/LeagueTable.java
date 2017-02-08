@@ -2,7 +2,9 @@ package com.soccer.soccercheck.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.ArrayList;
@@ -30,8 +32,8 @@ public class LeagueTable {
     private Integer matchday;
 
     @JsonProperty("standing")
-    @DatabaseField
-    private List<Standing> standing = new ArrayList<Standing>();
+    @ForeignCollectionField
+    private ForeignCollection<Standing> standing;
 
     public LeagueTable(){}
 
@@ -67,11 +69,11 @@ public class LeagueTable {
         this.matchday = matchday;
     }
 
-    public List<Standing> getStanding() {
+    public ForeignCollection<Standing> getStanding() {
         return standing;
     }
 
-    public void setStanding(List<Standing> standing) {
+    public void setStanding(ForeignCollection<Standing> standing) {
         this.standing = standing;
     }
 }

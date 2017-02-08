@@ -1,27 +1,47 @@
 package com.soccer.soccercheck.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * Created by ederson.js on 21/11/2016.
  */
-
+@DatabaseTable(tableName = "away")
 public class Away {
 
+    @JsonIgnore
+    @DatabaseField(id = true, generatedId = true)
+    private Integer id;
+
     @JsonProperty("goals")
+    @DatabaseField
     private Integer goals;
 
     @JsonProperty("goalsAgainst")
+    @DatabaseField(columnName = "goals_against")
     private Integer goalsAgainst;
 
     @JsonProperty("wins")
+    @DatabaseField
     private Integer wins;
 
     @JsonProperty("draws")
+    @DatabaseField
     private Integer draws;
 
     @JsonProperty("losses")
+    @DatabaseField
     private Integer losses;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getGoals() {
         return goals;

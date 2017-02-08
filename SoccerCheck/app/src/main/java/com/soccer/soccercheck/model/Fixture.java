@@ -41,23 +41,43 @@ public class Fixture implements Serializable {
     private String awayTeamName;
 
     @JsonProperty("result")
-    @DatabaseField
+    @DatabaseField(columnName = "result_id", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
     private Result result;
 
     @JsonProperty("odds")
-    @DatabaseField
+    @DatabaseField(columnName = "odds_id", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
     private Odds odds;
 
     @JsonIgnore
-    @DatabaseField(columnName = "id", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
+    @DatabaseField(columnName = "team_id", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
     private Team homeTeam;
 
     @JsonIgnore
-    @DatabaseField(columnName = "id", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
+    @DatabaseField(columnName = "team_id", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
     private Team awayTeam;
 
     @JsonIgnore
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private FixturesData fixturesData;
+
+    @JsonIgnore
     private String competitionName;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public FixturesData getFixturesData() {
+        return fixturesData;
+    }
+
+    public void setFixturesData(FixturesData fixturesData) {
+        this.fixturesData = fixturesData;
+    }
 
     public Links getLinks() {
         return links;
